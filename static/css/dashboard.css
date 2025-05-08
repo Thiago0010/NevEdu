@@ -1,12 +1,12 @@
 body{
-background-color: hwb(216 1% 86%);
+background-color: hwb(228 44% 43%)
 }
 .menu-neversing li{
 list-style: none;
 }
 .menu-neversing li a{
     text-decoration: none;
-    color: antiquewhite;
+    color: rgb(255, 255, 255);
     font-family: 'Roboto', sans-serif;
 }
     .menu-neversing ul{
@@ -25,3 +25,47 @@ background-color: rgb(0, 0, 0);
 height: 50px; /* Defina uma altura */
 width: 100%; /* Certifique-se de que ocupa toda a largura */
 }
+.nome-ini{
+color: rgb(246, 246, 252);
+font-family: 'Roboto', sans-serif;
+font-size: 50px;
+text-align: center;
+margin-top: 100px;
+}
+
+.progress-container {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    filter: drop-shadow(0 0 20px #00ffe1);
+  }
+
+  svg {
+    transform: rotate(-90deg);
+  }
+
+  .bg-circle {
+    stroke: #222;
+    stroke-width: 12;
+    fill: none;
+  }
+
+  .progress-ring__circle {
+    stroke: url(#gradiente);
+    stroke-width: 12;
+    fill: none;
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+    transition: stroke-dashoffset 1s ease-out;
+  }
+
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    font-weight: bold;
+    color: #00ffe1;
+    text-shadow: 0 0 10px #00ffe1;
+  }
