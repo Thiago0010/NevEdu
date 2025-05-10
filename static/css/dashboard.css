@@ -32,40 +32,62 @@ font-size: 50px;
 text-align: center;
 margin-top: 100px;
 }
+.progresso {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  width: 500px;
+  height: 200px;
+  background-color: rgb(35, 155, 85);
+  border-radius: 15px;
+  font-family: 'Orbitron', sans-serif;
+}
 
-.progress-container {
-    width: 200px;
-    height: 200px;
-    position: relative;
-    filter: drop-shadow(0 0 20px #00ffe1);
-  }
+.circle-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
 
-  svg {
-    transform: rotate(-90deg);
-  }
+.bg-circle {
+  fill: none;
+  stroke: #e6e6e6;
+  stroke-width: 12;
+}
 
-  .bg-circle {
-    stroke: #222;
-    stroke-width: 12;
-    fill: none;
-  }
+.progress-ring__circle {
+  fill: none;
+  stroke: url(#gradiente);
+  stroke-width: 12;
+  stroke-dasharray: 408;
+  stroke-dashoffset: 408;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 1s ease-out;
+}
 
-  .progress-ring__circle {
-    stroke: url(#gradiente);
-    stroke-width: 12;
-    fill: none;
-    stroke-dasharray: 440;
-    stroke-dashoffset: 440;
-    transition: stroke-dashoffset 1s ease-out;
-  }
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  font-weight: bold;
+  color: #2c3e50;
+}
 
-  .progress-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 28px;
-    font-weight: bold;
-    color: #00ffe1;
-    text-shadow: 0 0 10px #00ffe1;
-  }
+.info-texto h2 {
+  font-size: 20px;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.info-texto p {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #555;
+  max-width: 200px;
+}
+.progresso a{
+    text-decoration: none;
+}

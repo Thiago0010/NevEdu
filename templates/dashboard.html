@@ -19,23 +19,29 @@
     </ul>
  </div>
    <h1 class="nome-ini" id="nome-iniid">Olá, {{nome}}! como vai o seu dia?</h1>
-   
-   <div class="progress-container">
-    <svg width="200" height="200">
-      <!-- GRADIENTE FODA -->
-      <defs>
-        <linearGradient id="gradiente" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"   stop-color="#00ffe1"/>
-          <stop offset="100%" stop-color="#00ff88"/>
-        </linearGradient>
-      </defs>
-      <circle class="bg-circle" r="80" cx="100" cy="100" />
-      <circle class="progress-ring__circle" r="80" cx="100" cy="100" />
-    </svg>
-    <div class="progress-text" id="score-text">50%</div>
+   <div class="progresso">
+    <a href="cursos.html">
+    <div class="circle-container">
+      <svg width="150" height="150">
+        <defs>
+          <linearGradient id="gradiente" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00ffe1" />
+            <stop offset="100%" stop-color="#00ff88" />
+          </linearGradient>
+        </defs>
+        <circle class="bg-circle" r="65" cx="75" cy="75" />
+        <circle class="progress-ring__circle" r="65" cx="75" cy="75" />
+      </svg>
+      <div class="progress-text" id="score-text">0%</div>
+    </div>
+  
+    <div class="info-texto">
+      <h2>Seu Curso</h2>
+      <p>Você está indo bem! Continue assim!</p>
+      </a>
+    </div>
   </div>
   
-
    <script src="../javascript/dashboard.js"></script>
 </body>
 </html>
