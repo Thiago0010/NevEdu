@@ -7,6 +7,9 @@
     </title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
  <div class="menu-neversing">
@@ -19,6 +22,7 @@
     </ul>
  </div>
    <h1 class="nome-ini" id="nome-iniid">Olá, {{nome}}! como vai o seu dia?</h1>
+   <div class="progresso-container">
    <div class="progresso">
     <a href="cursos.html">
     <div class="circle-container">
@@ -41,7 +45,58 @@
       </a>
     </div>
   </div>
+  <div class="progresso">
+    <a href="score.html">
+    <div class="circle-container">
+      <svg width="150" height="150">
+        <defs>
+          <linearGradient id="gradiente" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00ffe1" />
+            <stop offset="100%" stop-color="#00ff88" />
+          </linearGradient>
+        </defs>
+        <circle class="bg-circle" r="65" cx="75" cy="75" />
+        <circle class="progress-ring__circle" r="65" cx="75" cy="75" />
+      </svg>
+      <div class="progress-text" id="score-text">0%</div>
+    </div>
   
+    <div class="info-texto">
+      <h2>Seu Curso</h2>
+      <p>Você está indo bem! Continue assim!</p>
+      </a>
+    </div>
+  </div>
+</div>
+     
+      <div class="meus-cursos">
+        <a href="cursos.html">
+        <h1>Meus Cursos</h1>
+        <p>Aqui você encontra todos os cursos que está matriculado.
+          Continue de onde parou, avance no seu ritmo e acompanhe seu progresso em tempo real.</p>
+        </a>
+      </div>
+
+      <div class="meus-cursos">
+        <a href="agenda.html">
+        <h1>Agenda</h1>
+        <p>Veja aqui os próximos eventos, aulas agendadas e prazos importantes.
+          Fique por dentro da sua rotina de estudos e não perca nenhuma atividade.</p>
+        </a>
+      </div>
+  
+
+      <footer class="footer">
+        <div class="footer-content">
+        <p>Desenvolvido, pensado e planejado com ☕ e ❤️ por [NEV]Thi_ii</p>  <p>&copy; 2025 NevEdu. Todos os direitos reservados.</p>
+          <ul class="footer-links">
+            <li><a href="#">Termos</a></li>
+            <li><a href="#">Privacidade</a></li>
+            <li><a href="https://wa.me/5561998889542">Contato</a></li>
+          </ul>
+        </div>
+      </footer>
+      
    <script src="../javascript/dashboard.js"></script>
 </body>
 </html>

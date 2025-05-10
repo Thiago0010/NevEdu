@@ -6,9 +6,12 @@ list-style: none;
 }
 .menu-neversing li a{
     text-decoration: none;
-    color: rgb(255, 255, 255);
+    color: rgb(180, 185, 192);
+    transition: color 0.3s ease; /* Transição suave para a cor */
     font-family: 'Roboto', sans-serif;
 }
+.menu-neversing li a:hover{
+    color: #cad5e0;}
     .menu-neversing ul{
         display: flex; /* Coloca os itens lado a lado */
         justify-content: flex-end; /* Alinha os itens ao final no eixo X */
@@ -32,14 +35,16 @@ font-size: 50px;
 text-align: center;
 margin-top: 100px;
 }
+
 .progresso {
   display: flex;
-  align-items: center;
-  gap: 30px;
-  width: 500px;
-  height: 200px;
+  flex-direction: column; /* Mantém o conteúdo interno empilhado */
+  align-items: center; /* Centraliza o conteúdo interno */
+  width: 250px; /* Largura de cada progresso */
+  height: auto; /* Altura automática */
   background-color: rgb(35, 155, 85);
   border-radius: 15px;
+  padding: 20px;
   font-family: 'Orbitron', sans-serif;
 }
 
@@ -90,4 +95,53 @@ margin-top: 100px;
 }
 .progresso a{
     text-decoration: none;
+}
+.progresso-container {
+  display: flex; /* Ativa o Flexbox */
+  gap: 70px; /* Espaçamento entre as divs */
+  justify-content: center; /* Centraliza as divs horizontalmente */
+  align-items: center; /* Alinha as divs verticalmente */
+  margin-top: 20px; /* Espaçamento superior */
+}
+.meus-cursos{
+    background-color: rgb(5, 10, 58);
+    padding: 50px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+.meus-cursos a{
+    text-decoration: none;
+    color: rgb(64, 100, 79);
+    font-family: 'Poppins', sans-serif;
+}
+.footer {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  margin-top: 40px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 0 0 0;
+}
+
+.footer-links li a {
+  color: #00ffe1;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-links li a:hover {
+  text-decoration: underline;
 }
