@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div>
     <h1>Cadastro NevEdu</h1>
     <form method="POST">
         <input type="text" name="nome" placeholder="Nome" required><br>
@@ -15,5 +16,6 @@
         <button type="submit">Cadastrar</button>
     </form>
     <p><a href="{{ url_for('index') }}">Já tem conta? Faça login</a></p>
+    </div>
 </body>
 </html>

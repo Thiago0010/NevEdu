@@ -1,5 +1,5 @@
 body{
-background-color: hwb(228 44% 43%)
+background-color:#F2F4F8
 }
 .menu-neversing li{
 list-style: none;
@@ -24,12 +24,12 @@ list-style: none;
     }
 .menu-neversing{
 position: relative;
-background-color: rgb(0, 0, 0);
+background-color:	#121212;
 height: 50px; /* Defina uma altura */
 width: 100%; /* Certifique-se de que ocupa toda a largura */
 }
 .nome-ini{
-color: rgb(246, 246, 252);
+color:#121212;
 font-family: 'Roboto', sans-serif;
 font-size: 50px;
 text-align: center;
@@ -42,7 +42,7 @@ margin-top: 100px;
   align-items: center; /* Centraliza o conteúdo interno */
   width: 250px; /* Largura de cada progresso */
   height: auto; /* Altura automática */
-  background-color: rgb(35, 155, 85);
+  background-color: #fff; /* Cor de fundo */
   border-radius: 15px;
   padding: 20px;
   font-family: 'Orbitron', sans-serif;
@@ -90,7 +90,7 @@ margin-top: 100px;
 .info-texto p {
   font-size: 14px;
   margin-top: 8px;
-  color: #555;
+  color:	#9CA3AF;
   max-width: 200px;
 }
 .progresso a{
@@ -101,17 +101,18 @@ margin-top: 100px;
   gap: 70px; /* Espaçamento entre as divs */
   justify-content: center; /* Centraliza as divs horizontalmente */
   align-items: center; /* Alinha as divs verticalmente */
-  margin-top: 20px; /* Espaçamento superior */
+  margin-top: 20px; /* Espaçamento superior */;
+  background-color: 	#F2F4F8;
 }
 .meus-cursos{
-    background-color: rgb(5, 10, 58);
+    background-color: #fff;
     padding: 50px;
     border-radius: 20px;
     margin-top: 20px;
 }
 .meus-cursos a{
     text-decoration: none;
-    color: rgb(64, 100, 79);
+    color:	#F2F4F8;
     font-family: 'Poppins', sans-serif;
 }
 .footer {
@@ -144,4 +145,67 @@ margin-top: 100px;
 
 .footer-links li a:hover {
   text-decoration: underline;
+}
+
+.recomendacoes {
+  background-color: #F2F4F8;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.recomendacoes h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.recomendacoes p {
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.card-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  width: 220px;
+  text-align: left;
+}
+
+.card h3 {
+  margin: 0 0 10px;
+}
+
+.card span {
+  display: block;
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.card button {
+  background-color: #3B82F6;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background-color: #2563EB;
+}
+.meus-cursos h1{
+ color: #000000;
+}
+.meus-cursos p{
+ color: 	#9CA3AF;
 }
