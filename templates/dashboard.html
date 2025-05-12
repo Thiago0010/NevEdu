@@ -21,6 +21,8 @@
         <li><a href="ajuda.html">Ajuda</a></li>
     </ul>
  </div>
+ <button id="modo-toggle" class="modo-btn">🌙 Modo Escuro</button>
+
    <h1 class="nome-ini" id="nome-iniid">Olá, {{nome}}! como vai o seu dia?</h1>
    <div class="progresso-container">
    <div class="progresso">
@@ -103,20 +105,59 @@
   </div>
 </section>
 
-   
+   <section class="ia-placeholder">
+  <h2>Assistente Inteligente</h2>
+  <p>Em breve, você poderá contar com a IA do NevEdu para tirar dúvidas, revisar conteúdos e acelerar seus estudos.</p>
+  <div class="ia-preview">
+    <p class="ia-msg"><strong>🤖 NevIA:</strong> “Olá, Thiago! Como posso te ajudar nos estudos hoje?”</p>
+    <input type="text" placeholder="Digite sua pergunta..." disabled>
+  </div>
+</section>
+
+
 
       <footer class="footer">
         <div class="footer-content">
         <p>Desenvolvido, pensado e planejado com ☕ e ❤️ por [NEV]Thi_ii</p>  <p>&copy; 2025 NevEdu. Todos os direitos reservados.</p>
           <ul class="footer-links">
-            <li><a href="#">Termos</a></li>
+            <li><a href="../templates/termos.html">Termos</a></li>
             <li><a href="#">Privacidade</a></li>
             <li><a href="https://wa.me/5561998889542">Contato</a></li>
           </ul>
         </div>
       </footer>
 
-      
-      <script src="../javascript/dashboard.js"></script>
+<script>
+    const percent = 65; // muda esse valor pra o score real
+  const circle = document.querySelector('.progress-ring__circle');
+  const text = document.getElementById('score-text');
+
+  const radius = 65;
+  const circumference = 2 * Math.PI * radius;
+
+  circle.style.strokeDasharray = `${circumference}`;
+  const offset = circumference - (percent / 100) * circumference;
+  circle.style.strokeDashoffset = offset;
+
+  text.textContent = `${percent}%`;
+
+  
+  const botao = document.getElementById('modo-toggle');
+  const body = document.body;
+
+  // Ativar se tiver salvo no localStorage
+  if (localStorage.getItem('modo') === 'escuro') {
+    body.classList.add('dark-mode');
+    botao.textContent = '☀️ Modo Claro';
+  }
+
+  botao.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    const modoAtual = body.classList.contains('dark-mode') ? 'escuro' : 'claro';
+    localStorage.setItem('modo', modoAtual);
+    botao.textContent = modoAtual === 'escuro' ? '☀️ Modo Claro' : '🌙 Modo Escuro';
+  });
+</script>
+
 </body>
 </html>
