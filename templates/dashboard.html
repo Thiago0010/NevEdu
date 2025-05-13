@@ -12,6 +12,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Botão hamburguer -->
+<button id="menu-toggle" class="hamburguer-btn">☰</button>
+
+<!-- Menu lateral -->
+<nav id="side-menu" class="side-menu">
+  <ul>
+    <li><a href="#">Início</a></li>
+    <li><a href="#">Meus Cursos</a></li>
+    <li><a href="#">Agenda</a></li>
+    <li><a href="#">Recomendações</a></li>
+    <li><a href="#">Assistente IA</a></li>
+  </ul>
+</nav>
+
  <div class="menu-neversing">
     <!--FUTURAMENTE COLOCAR A LOGO DA NEVERSING AQ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
     <ul>
@@ -114,7 +128,27 @@
   </div>
 </section>
 
+         <section class="avaliacoes">
+            <div class="avaliacao-cliente">
+               <h2>Avaliações NevEdu.</h2>
+                <p>Veja o que nossos alunos estão dizendo sobre nós.</p>
+                <div class="avaliacao">
+                   <p>"O NevEdu mudou minha forma de aprender! As aulas são dinâmicas e o conteúdo é super atualizado."</p>
+                   <span>- Maria Silva</span>
+                    <p>"A plataforma é incrível! Consegui aprender muito mais rápido e de forma organizada."</p>
+                   <span>- Eduardo Oliveira</span>
+            </div>
+         </section>
 
+                <section class="comunidade-sect">
+                <div class="comunidade-div">
+                <h2>Nossa Comunidade</h2>
+                <p>Aprender sozinho é difícil. Por isso, o NevEdu é mais do que uma plataforma — é um lugar onde estudantes e apaixonados por tecnologia se conectam, compartilham experiências e evoluem juntos.
+
+Aqui, cada dúvida é bem-vinda, cada conquista é celebrada, e todo mundo tem voz.
+Junte-se à nossa comunidade e descubra que estudar pode ser mais leve, humano e colaborativo.</p>
+                </div>
+                </section>
 
       <footer class="footer">
         <div class="footer-content">
@@ -126,7 +160,6 @@
           </ul>
         </div>
       </footer>
-
 <script>
     const percent = 65; // muda esse valor pra o score real
   const circle = document.querySelector('.progress-ring__circle');
@@ -157,6 +190,29 @@
     localStorage.setItem('modo', modoAtual);
     botao.textContent = modoAtual === 'escuro' ? '☀️ Modo Claro' : '🌙 Modo Escuro';
   });
+  document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('menu-toggle');
+  const sideMenu = document.getElementById('side-menu');
+
+  toggleBtn.addEventListener('click', () => {
+    if (sideMenu.style.left === '0px') {
+      sideMenu.style.left = '-250px';
+    } else {
+      sideMenu.style.left = '0px';
+    }
+  });
+});
+    // Captura erros de JavaScript
+    window.onerror = function (message, source, lineno, colno, error) {
+        console.error("Erro detectado:", message, source, lineno, colno, error);
+        window.location.href = "/templates/erro.html"; // Redireciona para a página de erro
+    };
+
+    // Captura erros de rede (como falta de internet)
+    window.addEventListener("offline", function () {
+        alert("Você está offline. Redirecionando para a página de erro.");
+        window.location.href = "/templates/erro.html";
+    });
 </script>
 
 </body>

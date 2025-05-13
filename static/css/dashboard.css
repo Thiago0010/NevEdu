@@ -347,18 +347,83 @@ body.dark-mode .ia-preview input {
 .modo-btn {
   position: fixed;
   top: 20px;
-  left: 20px;
+  right: 20px;
+  z-index: 1001;
   padding: 10px 16px;
   background-color: #3B82F6;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  z-index: 999;
-  font-family: 'Poppins', sans-serif;
-  transition: background 0.3s ease;
 }
 
 .modo-btn:hover {
   background-color: #2563EB;
+}
+
+.hamburguer-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #3B82F6;
+  cursor: pointer;
+}
+
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 230px;
+  height: 100%;
+  background-color: #1E2A38;
+  color: white;
+  padding: 60px 20px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+.side-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-menu li {
+  margin-bottom: 20px;
+}
+
+.side-menu a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+}
+  body.dark-mode .side-menu {
+  background-color: #121212;
+}
+.avaliacao-cliente{
+  background-color: #F2F4F8;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  color: #1e1e1e;
+}
+.dark-mode .avaliacao-cliente {
+  background-color: #1a1a1a;
+  color: #f2f2f2;
+}
+.comunidade-sect{
+  background-color: #dadfe9;
+  padding: 50px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 20px;
+  box-shadow: 0 9px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+  width: 900px;
+  margin: 0 auto; /* Centraliza horizontalmente */
 }
