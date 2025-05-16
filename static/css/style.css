@@ -36,3 +36,17 @@ input{
     border-radius: 5px;
     margin-bottom: 10px;
 }
+button {
+  background-color: #3B82F6;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #2563EB;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #3B82F6;
+}

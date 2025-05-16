@@ -427,3 +427,51 @@ body.dark-mode .ia-preview input {
   width: 900px;
   margin: 0 auto; /* Centraliza horizontalmente */
 }
+.dark-mode .comunidade-sect {
+  background-color: #1a1a1a;
+  color: #f2f2f2;
+}
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+  .card-carrossel {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.card-carrossel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.card-carrossel::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.card-carrossel > .card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  width: 220px;
+  transition: 0.3s ease;
+}
+
+.card-carrossel > .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
