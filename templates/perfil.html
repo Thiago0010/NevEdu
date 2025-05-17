@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perfil | NevEdu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}" />
+</head>
+<body>
+  <main class="perfil-container" id="perfilContainer">
+
+    <!-- Cabeçalho -->
+    <header class="perfil-header">
+      <div class="foto-wrapper">
+        <img
+          id="fotoPerfil"
+          src="{{ foto or url_for('static', filename='img/default-profile.png') }}"
+          alt="Foto do Perfil"
+          class="foto-perfil"
+        />
+        <label for="inputFoto" class="btn-upload" title="Alterar Foto">📷</label>
+        <input type="file" id="inputFoto" accept="image/*" hidden />
+      </div>
+      <div class="usuario-info">
+        <h1 id="nomeUsuario">{{ nome }}</h1>
+        <button class="btn-editar" id="btnEditarPerfil">Editar Perfil</button>
+        <button class="btn-logout" onclick="window.location.href='{{ url_for('logout') }}'">Sair</button>
+      </div>
+    </header>
+
+    <!-- Modal editar perfil -->
+    <div id="modalEditar" class="modal hidden">
+      <div class="modal-content">
+        <h2>Editar Perfil</h2>
+        <form id="formEditarPerfil">
+          <label for="nomeInput">Nome:</label>
+          <input type="text" id="nomeInput" name="nome" value="{{ nome }}" required />
+
+          <label for="anoInput">Ano Escolar:</label>
+          <select id="anoInput" name="ano_escolar" required>
+            {% set anos = ['6º Ano','7º Ano','8º Ano','9º Ano','1º Ano EM','2º Ano EM','3º Ano EM'] %}
+            {% for ano in anos %}
+            <option value="{{ ano }}" {% if ano == ano_escolar %}selected{% endif %}>{{ ano }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="inicioInput">Início do Ano Letivo:</label>
+          <input type="date" id="inicioInput" name="inicio_escolar" value="{{ inicio_escolar }}" required />
+
+          <button type="submit" class="btn-salvar">Salvar</button>
+          <button type="button" id="btnCancelar" class="btn-cancelar">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Info Escolar e Progresso -->
+    <section class="info-escolar">
+      <p><strong>📚 Ano Escolar:</strong> <span id="anoEscolar">{{ ano }}</span></p>
+      <p><strong>⏱️ Progresso do Ano Letivo:</strong> <span id="textoProgresso">{{ progresso }}%</span></p>
+      <div class="barra-progresso" role="progressbar" aria-valuenow="{{ progresso }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do ano letivo">
+        <div class="preenchido" id="barraProgresso" style="width: {{ progresso }}%"></div>
+      </div>
+    </section>
+
+    <!-- Cursos recomendados -->
+    <section class="recomendacoes">
+      <h2>🔎 Sugestões de Cursos para Você</h2>
+      <ul id="listaCursos">
+        {% if progresso < 50 %}
+          <li>Curso de Organização e Planejamento de Estudos</li>
+          <li>Como Usar o NevEdu com Eficiência</li>
+        {% elif progresso < 75 %}
+          <li>Português Intermediário - Curso Gratuito</li>
+          <li>Revisão de Matemática - Fundação Lemann</li>
+        {% else %}
+          <li>Lógica de Programação com Python</li>
+          <li>Desafios Avançados de Raciocínio Lógico</li>
+        {% endif %}
+      </ul>
+    </section>
+
+    <!-- Histórico de cursos -->
+    <section class="historico">
+      <h2>📜 Histórico de Cursos Concluídos</h2>
+      <ul>
+        {% for curso in historico_cursos %}
+          <li>{{ curso.nome }} - {{ curso.data_conclusao.strftime('%d/%m/%Y') }}</li>
+        {% else %}
+          <li>Nenhum curso concluído ainda.</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- Conquistas -->
+    <section class="conquistas">
+      <h2>🏆 Conquistas</h2>
+      <div class="badges">
+        {% for badge in badges %}
+          <div class="badge" title="{{ badge.nome }}">
+            <img src="{{ url_for('static', filename='img/badges/' + badge.icone) }}" alt="{{ badge.nome }}" />
+            <span>{{ badge.nome }}</span>
+          </div>
+        {% else %}
+          <p>Você ainda não conquistou nenhuma badge.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Toggle Tema -->
+    <button id="btnToggleTema" class="btn-toggle-tema" aria-label="Alternar modo claro/escuro">🌙</button>
+
+  </main>
+
+  <script>
+    // Modal editar perfil
+    const btnEditar = document.getElementById('btnEditarPerfil');
+    const modal = document.getElementById('modalEditar');
+    const btnCancelar = document.getElementById('btnCancelar');
+    const formEditar = document.getElementById('formEditarPerfil');
+
+    btnEditar.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+
+    btnCancelar.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
+    formEditar.addEventListener('submit', e => {
+      e.preventDefault();
+      // Aqui você pode adicionar AJAX para enviar dados para backend
+      const nome = document.getElementById('nomeInput').value;
+      const ano = document.getElementById('anoInput').value;
+      const inicio = document.getElementById('inicioInput').value;
+
+      // Atualiza visualmente
+      document.getElementById('nomeUsuario').textContent = nome;
+      document.getElementById('anoEscolar').textContent = ano;
+      modal.classList.add('hidden');
+
+      // Atualizar progresso com base na nova data
+      atualizarProgresso(inicio);
+
+      // Aqui faz o envio para o servidor via fetch/AJAX
+      // fetch('/atualizar-perfil', {...})
+    });
+
+    // Upload de foto com preview
+    const inputFoto = document.getElementById('inputFoto');
+    const fotoPerfil = document.getElementById('fotoPerfil');
+
+    inputFoto.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        fotoPerfil.src = reader.result;
+        // Aqui você pode enviar a foto para o backend via fetch/AJAX
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Função para atualizar progresso dinamicamente
+    function atualizarProgresso(inicioLetivo) {
+      const hoje = new Date();
+      const inicio = new Date(inicioLetivo);
+      const fim = new Date(inicio.getFullYear(), 11, 20);
+      let diasTotais = (fim - inicio) / (1000 * 60 * 60 * 24);
+      let diasPassados = (hoje - inicio) / (1000 * 60 * 60 * 24);
+      let progresso = Math.round((diasPassados / diasTotais) * 100);
+      if (progresso < 0) progresso = 0;
+      if (progresso > 100) progresso = 100;
+
+      document.getElementById('barraProgresso').style.width = progresso + '%';
+      document.getElementById('textoProgresso').textContent = progresso + '%';
+    }
+
+    // Toggle modo claro/escuro
+    const btnToggleTema = document.getElementById('btnToggleTema');
+    const body = document.body;
+
+    // Recupera preferência do localStorage
+    const temaAtual = localStorage.getItem('tema');
+    if (temaAtual === 'escuro') {
+      body.classList.add('dark-mode');
+      btnToggleTema.textContent = '☀️';
+    }
+
+    btnToggleTema.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      if (body.classList.contains('dark-mode')) {
+        btnToggleTema.textContent = '☀️';
+        localStorage.setItem('tema', 'escuro');
+      } else {
+        btnToggleTema.textContent = '🌙';
+        localStorage.setItem('tema', 'claro');
+      }
+    });
+  </script>
+</body>
+</html>

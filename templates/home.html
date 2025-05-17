@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>NevEdu — Aprendizado moderno com IA</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <header class="cabecalho">
+    <div class="container">
+      <h1 class="logo">NevEdu</h1>
+      <nav>
+        <a href="{{ url_for('cadastro') }}">Criar Conta</a>
+        <a href="{{ url_for('index') }}">Entrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="texto">
+        <h2>O futuro da educação começa aqui</h2>
+        <p>Com IA, personalização total e conteúdo criado para o seu ritmo. Gratuito, intuitivo e eficiente.</p>
+        <a href="{{ url_for('cadastro') }}" class="botao">Comece gratuitamente</a>
+      </div>
+      <div class="imagem">
+        <img src="{{ url_for('static', filename='img/hero-estudando.svg') }}" alt="Pessoa estudando" />
+      </div>
+    </div>
+  </section>
+
+  <section class="beneficios">
+    <div class="container">
+      <h3>🚀 Como a NevEdu te ajuda a evoluir</h3>
+      <ul>
+        <li>✔️ Cursos personalizados com IA</li>
+        <li>✔️ Progresso automático por ano escolar</li>
+        <li>✔️ Sistema de badges e histórico pessoal</li>
+        <li>✔️ 100% gratuito para sempre</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="metricas">
+    <div class="container">
+      <ul>
+        <li><strong>+2.000</strong><br>alunos cadastrados</li>
+        <li><strong>+350</strong><br>cursos gerados</li>
+        <li><strong>100%</strong><br>gratuito</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="depoimento">
+    <div class="container">
+      <blockquote>
+        “A NevEdu me ajudou mais em uma semana do que meses na escola tradicional. É como ter um professor que realmente entende você.”
+      </blockquote>
+      <cite>— Rafael, aluno do 8º ano</cite>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="container">
+      <h3>Não perca tempo. Aprenda do seu jeito, no seu tempo.</h3>
+      <a class="botao grande" href="{{ url_for('cadastro') }}">Quero começar agora</a>
+    </div>
+  </section>
+
+  <footer class="rodape">
+    <div class="container">
+      <p>&copy; 2025 NevEdu. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

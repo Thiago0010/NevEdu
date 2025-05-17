@@ -1,0 +1,143 @@
+:root {
+  --cor-bg: #ffffff;
+  --cor-texto: #1b1b1b;
+  --cor-primaria: #0c66ff;
+  --cor-secundaria: #f0f2f5;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--cor-bg);
+  color: var(--cor-texto);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: var(--cor-texto);
+  font-weight: 500;
+}
+
+.hero {
+  background: var(--cor-secundaria);
+  padding: 80px 0;
+}
+
+.hero-grid {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero h2 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 18px;
+  max-width: 500px;
+}
+
+.botao {
+  display: inline-block;
+  background: var(--cor-primaria);
+  color: white;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: background 0.3s;
+}
+
+.botao:hover {
+  background: #0945b3;
+}
+
+.botao.grande {
+  padding: 16px 40px;
+  font-size: 18px;
+}
+
+.beneficios ul {
+  list-style: none;
+  padding-left: 0;
+  font-size: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.metricas {
+  background: #f9f9f9;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.metricas ul {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.metricas li {
+  font-size: 20px;
+}
+
+.metricas strong {
+  font-size: 36px;
+  color: var(--cor-primaria);
+}
+
+.depoimento {
+  padding: 60px 20px;
+  background: #fff;
+  text-align: center;
+  font-style: italic;
+}
+
+.depoimento blockquote {
+  font-size: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto 15px;
+}
+
+.cta-final {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.rodape {
+  background: #eee;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #666;
+}

@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>NevEdu | Cadastro</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8" />
+  <title>Cadastro | NevEdu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}" />
 </head>
 <body>
-    <div>
-    <h1>Cadastro NevEdu</h1>
-    <form method="POST">
-        <input type="text" name="nome" placeholder="Nome" required><br>
-        <input type="email" name="email" placeholder="E-mail" required><br>
-        <input type="password" name="senha" placeholder="Senha" required><br>
-        <input type="password" name="confirmar" placeholder="Confirmar Senha" required><br>
-        <button type="submit">Cadastrar</button>
+  <main class="cadastro-container">
+    <h1>Crie sua conta NevEdu</h1>
+    <form action="{{ url_for('cadastro') }}" method="POST">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" name="nome" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" name="senha" required>
+
+      <label for="confirmar">Confirmar Senha:</label>
+      <input type="password" id="confirmar" name="confirmar" required>
+
+      <label for="ano_escolar">Ano Escolar:</label>
+      <select name="ano_escolar" id="ano_escolar" required>
+        <option value="">Selecione</option>
+        <option value="6º Ano">6º Ano</option>
+        <option value="7º Ano">7º Ano</option>
+        <option value="8º Ano">8º Ano</option>
+        <option value="9º Ano">9º Ano</option>
+        <option value="1º Ano EM">1º Ano EM</option>
+        <option value="2º Ano EM">2º Ano EM</option>
+        <option value="3º Ano EM">3º Ano EM</option>
+      </select>
+
+      <label for="inicio_escolar">Início do Ano Letivo:</label>
+      <input type="date" id="inicio_escolar" name="inicio_escolar" required>
+
+      <button type="submit">Cadastrar</button>
     </form>
-    <p><a href="{{ url_for('index') }}">Já tem conta? Faça login</a></p>
-    </div>
+  </main>
 </body>
 </html>
