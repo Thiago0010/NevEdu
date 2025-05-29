@@ -5,503 +5,619 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>NevEdu - Agenda Escolar</title>
 <style>
+  /* Reset básico */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f7f9;
-    margin: 0;
-    padding: 20px;
-    color: #333;
+    background: #f0f4f8;
+    margin: 0; padding: 0;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
   }
   h1 {
-    text-align: center;
-    color: #2c3e50;
+    margin-bottom: 0.3rem;
+    color: #0077c8;
   }
-  #calendar {
-    max-width: 720px;
-    margin: 20px auto;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 12px rgb(0 0 0 / 0.12);
-    padding: 20px;
+  .container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+    border-radius: 12px;
+    padding: 1rem 1.5rem 2rem;
   }
-  #monthYear {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #2980b9;
+
+  /* Controles superiores */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    margin-bottom: 1rem;
   }
-  #calendar-controls {
-    text-align: center;
-    margin-bottom: 20px;
+  .controls > * {
+    flex: 1 1 150px;
+    min-width: 150px;
   }
-  #calendar-controls button {
-    background-color: #2980b9;
-    border: none;
-    color: white;
-    padding: 8px 14px;
-    margin: 0 10px;
-    border-radius: 6px;
+  button {
     cursor: pointer;
-    font-weight: 700;
-    transition: background-color 0.3s ease;
-  }
-  #calendar-controls button:hover {
-    background-color: #3498db;
-  }
-  #categoryFilter {
-    margin: 15px auto;
-    max-width: 720px;
-    text-align: center;
-  }
-  #categoryFilter label {
-    margin-right: 10px;
+    border: none;
+    background: #0077c8;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
     font-weight: 600;
+    transition: background-color 0.2s ease;
   }
-  #categoryFilter select {
-    padding: 5px 10px;
+  button:hover, button:focus {
+    background: #005fa3;
+    outline: none;
+  }
+  select, input[type=text] {
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    border: 1.8px solid #ccc;
     font-size: 1rem;
+    transition: border-color 0.3s ease;
   }
-  table {
+  select:focus, input[type=text]:focus {
+    border-color: #0077c8;
+    outline: none;
+  }
+
+  /* Calendário */
+  table.calendar {
     width: 100%;
     border-collapse: collapse;
+    user-select: none;
   }
-  th {
-    color: #2980b9;
-    font-weight: 700;
-    padding: 12px 0;
-    border-bottom: 2px solid #2980b9;
-  }
-  td {
-    width: 14.28%;
+  table.calendar th, table.calendar td {
     border: 1px solid #ddd;
-    height: 90px;
+    text-align: left;
     vertical-align: top;
+    height: 100px;
     padding: 6px;
-    cursor: pointer;
     position: relative;
-    transition: background-color 0.3s ease;
-    overflow: hidden;
+    background: white;
+    border-radius: 0 0 6px 6px;
   }
-  td:hover {
-    background-color: #d6eaf8;
+  table.calendar th {
+    background: #0077c8;
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
   }
-  td.event-day {
-    background-color: #eaf4fc;
+  table.calendar td.empty {
+    background: #f9fbfc;
+  }
+  table.calendar td.today {
+    box-shadow: 0 0 0 3px #0077c8 inset;
   }
   .day-number {
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
   }
-  .events {
-    max-height: 60px;
-    overflow-y: auto;
-    margin-top: 6px;
-  }
+
+  /* Eventos */
   .event-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: #2980b9;
-    color: white;
+    background-color: #e1f0ff;
+    border-left: 6px solid #0077c8;
+    padding: 3px 6px 3px 10px;
     margin-bottom: 4px;
-    padding: 3px 6px;
     border-radius: 4px;
-    font-size: 0.75rem;
-    white-space: nowrap;
+    font-size: 0.9rem;
+    cursor: pointer;
     overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
   }
-  .event-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
+  .event-item .color-mark {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
     margin-right: 6px;
     flex-shrink: 0;
   }
-  .event-title {
+  .event-item .title {
     flex-grow: 1;
   }
-  .event-actions {
-    margin-left: 6px;
+  .event-item .delete-btn {
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    color: #b33a3a;
+    font-size: 1.2rem;
     cursor: pointer;
-    font-weight: 700;
-    color: #f44336;
+    margin-left: 6px;
+    line-height: 1;
   }
-  .event-actions:hover {
-    color: #c0392b;
+  .event-item .delete-btn:hover, .event-item .delete-btn:focus {
+    color: #7f1d1d;
+    outline: none;
   }
 
   /* Modal */
-  #eventModal {
-    display: none;
+  .modal-overlay {
     position: fixed;
-    z-index: 15;
-    left: 0; top: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    overflow-y: auto;
+    inset: 0;
+    background: rgba(20,20,20,0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
   }
-  #eventModalContent {
-    background-color: #fff;
-    margin: 6% auto;
-    padding: 25px 30px 30px;
-    border-radius: 8px;
-    max-width: 420px;
-    box-shadow: 0 3px 15px rgb(0 0 0 / 0.25);
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal {
+    background: white;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    padding: 1.2rem 1.5rem 1.5rem;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.2);
     position: relative;
   }
-  #eventModalContent h2 {
+  .modal h2 {
     margin-top: 0;
-    color: #2980b9;
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-align: center;
+    margin-bottom: 1rem;
+    color: #0077c8;
   }
-  #eventModalContent label {
+  .modal label {
     display: block;
-    margin: 12px 0 6px;
+    margin-top: 0.8rem;
     font-weight: 600;
+    color: #333;
   }
-  #eventModalContent input[type="text"],
-  #eventModalContent textarea,
-  #eventModalContent select {
+  .modal input[type=text],
+  .modal select,
+  .modal textarea {
     width: 100%;
-    padding: 8px 10px;
-    box-sizing: border-box;
+    padding: 0.5rem;
     font-size: 1rem;
-    border: 1.8px solid #ccc;
+    margin-top: 0.3rem;
     border-radius: 6px;
-    transition: border-color 0.3s ease;
-  }
-  #eventModalContent input[type="text"]:focus,
-  #eventModalContent textarea:focus,
-  #eventModalContent select:focus {
-    border-color: #2980b9;
-    outline: none;
-  }
-  #eventModalContent textarea {
+    border: 1.5px solid #ccc;
     resize: vertical;
   }
-  #eventModalContent .modal-buttons {
-    margin-top: 25px;
+  .modal textarea {
+    min-height: 60px;
+  }
+  .modal-buttons {
+    margin-top: 1.2rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 0.6rem;
   }
-  #eventModalContent button {
-    background-color: #2980b9;
+  .btn-cancel {
+    background: #bbb;
+    color: #333;
+  }
+  .btn-delete {
+    background: #b33a3a;
+  }
+  .btn-delete:hover, .btn-delete:focus {
+    background: #7f1d1d;
+  }
+
+  /* Notificação */
+  .notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0077c8;
     color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-    flex-grow: 1;
-    margin: 0 5px;
-    transition: background-color 0.3s ease;
+    padding: 0.7rem 1.3rem;
+    border-radius: 25px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 110;
   }
-  #eventModalContent button:hover {
-    background-color: #3498db;
+  .notification.show {
+    opacity: 1;
+    pointer-events: auto;
   }
-  #deleteEventBtn {
-    background-color: #f44336;
-  }
-  #deleteEventBtn:hover {
-    background-color: #c0392b;
-  }
-  #closeModal {
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    color: #999;
-    position: absolute;
-    right: 18px;
-    top: 14px;
-    cursor: pointer;
-  }
-  #closeModal:hover {
-    color: #555;
-  }
-  /* Scrollbar evento */
-  .events::-webkit-scrollbar {
-    width: 6px;
-  }
-  .events::-webkit-scrollbar-thumb {
-    background-color: #2980b9;
-    border-radius: 3px;
+
+  /* Responsivo */
+  @media (max-width: 720px) {
+    table.calendar th, table.calendar td {
+      height: 80px;
+      font-size: 0.8rem;
+      padding: 4px 5px;
+    }
+    .event-item {
+      font-size: 0.8rem;
+      padding: 2px 5px 2px 8px;
+    }
   }
 </style>
 </head>
 <body>
 
-<h1>NevEdu - Agenda Escolar</h1>
+  <h1>NevEdu - Agenda Escolar</h1>
+  <div class="container" role="main" aria-label="Agenda Escolar NevEdu">
 
-<div id="calendar">
-  <div id="monthYear"></div>
-  <div id="calendar-controls">
-    <button id="prevMonth">&lt; Mês Anterior</button>
-    <button id="nextMonth">Próximo Mês &gt;</button>
-  </div>
-  <div id="categoryFilter">
-    <label for="categorySelect">Filtrar por Categoria:</label>
-    <select id="categorySelect">
-      <option value="all">Todas</option>
-      <option value="Matemática">Matemática</option>
-      <option value="História">História</option>
-      <option value="Prova">Prova</option>
-      <option value="Reunião">Reunião</option>
-      <option value="Outro">Outro</option>
-    </select>
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Dom</th>
-        <th>Seg</th>
-        <th>Ter</th>
-        <th>Qua</th>
-        <th>Qui</th>
-        <th>Sex</th>
-        <th>Sáb</th>
-      </tr>
-    </thead>
-    <tbody id="calendarBody"></tbody>
-  </table>
-</div>
+    <div class="controls" role="region" aria-label="Controles da agenda">
+      <button id="prevMonth" aria-label="Mês anterior">←</button>
+      <div id="monthYearLabel" aria-live="polite" style="font-weight:700; text-align:center; flex-grow:1;"></div>
+      <button id="nextMonth" aria-label="Próximo mês">→</button>
 
-<!-- Modal para adicionar/editar evento -->
-<div id="eventModal">
-  <div id="eventModalContent">
-    <button id="closeModal" title="Fechar">&times;</button>
-    <h2 id="modalTitle">Adicionar Evento</h2>
-    <form id="eventForm">
-      <label for="eventTitle">Título do Evento:</label>
-      <input type="text" id="eventTitle" required />
-
-      <label for="eventDesc">Descrição:</label>
-      <textarea id="eventDesc" rows="3"></textarea>
-
-      <label for="eventCategory">Categoria:</label>
-      <select id="eventCategory" required>
-        <option value="" disabled selected>Selecione uma categoria</option>
-        <option value="Matemática">Matemática</option>
-        <option value="História">História</option>
-        <option value="Prova">Prova</option>
-        <option value="Reunião">Reunião</option>
-        <option value="Outro">Outro</option>
+      <select id="categoryFilter" aria-label="Filtrar por categoria">
+        <option value="all">Todas Categorias</option>
+        <option value="aula">Aula</option>
+        <option value="evento">Evento</option>
+        <option value="reuniao">Reunião</option>
+        <option value="prova">Prova</option>
       </select>
 
-      <div class="modal-buttons">
-        <button type="submit" id="saveEventBtn">Salvar Evento</button>
-        <button type="button" id="deleteEventBtn" style="display:none;">Excluir Evento</button>
-      </div>
-    </form>
+      <input type="text" id="searchInput" placeholder="Buscar evento..." aria-label="Buscar evento" autocomplete="off"/>
+
+      <button id="addEventBtn" aria-label="Adicionar novo evento">+ Novo Evento</button>
+    </div>
+
+    <table class="calendar" role="grid" aria-labelledby="monthYearLabel">
+      <thead>
+        <tr>
+          <th scope="col">Dom</th>
+          <th scope="col">Seg</th>
+          <th scope="col">Ter</th>
+          <th scope="col">Qua</th>
+          <th scope="col">Qui</th>
+          <th scope="col">Sex</th>
+          <th scope="col">Sáb</th>
+        </tr>
+      </thead>
+      <tbody id="calendarBody" role="rowgroup"></tbody>
+    </table>
   </div>
-</div>
+
+  <!-- Modal de evento -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+    <div class="modal" role="document">
+      <h2 id="modalTitle">Adicionar / Editar Evento</h2>
+      <form id="eventForm">
+        <input type="hidden" id="eventIndex" />
+        <label for="eventDate">Data</label>
+        <input type="text" id="eventDate" name="eventDate" readonly aria-readonly="true" />
+
+        <label for="eventTitle">Título <span aria-hidden="true">*</span></label>
+        <input type="text" id="eventTitle" name="eventTitle" required autocomplete="off" />
+
+        <label for="eventCategory">Categoria <span aria-hidden="true">*</span></label>
+        <select id="eventCategory" name="eventCategory" required>
+          <option value="">Selecione</option>
+          <option value="aula">Aula</option>
+          <option value="evento">Evento</option>
+          <option value="reuniao">Reunião</option>
+          <option value="prova">Prova</option>
+        </select>
+
+        <label for="eventDescription">Descrição</label>
+        <textarea id="eventDescription" name="eventDescription" rows="3"></textarea>
+
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancel" id="btnCancel">Cancelar</button>
+          <button type="button" class="btn-delete" id="btnDelete" style="display:none;">Excluir</button>
+          <button type="submit" class="btn-save" id="btnSave">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="notification" id="notification" role="alert" aria-live="assertive"></div>
 
 <script>
-  const calendarBody = document.getElementById('calendarBody');
-  const monthYear = document.getElementById('monthYear');
-  const prevMonthBtn = document.getElementById('prevMonth');
-  const nextMonthBtn = document.getElementById('nextMonth');
-  const eventModal = document.getElementById('eventModal');
-  const closeModalBtn = document.getElementById('closeModal');
-  const eventForm = document.getElementById('eventForm');
-  const eventTitleInput = document.getElementById('eventTitle');
-  const eventDescInput = document.getElementById('eventDesc');
-  const eventCategorySelect = document.getElementById('eventCategory');
-  const categoryFilter = document.getElementById('categorySelect');
-  const deleteEventBtn = document.getElementById('deleteEventBtn');
-  const modalTitle = document.getElementById('modalTitle');
-  const saveEventBtn = document.getElementById('saveEventBtn');
-
-  let currentDate = new Date();
-  let selectedDay = null;
-  let editingEventIndex = null;
-
-  // Evento armazenados no localStorage (por dia string: "YYYY-MM-DD")
-  // Cada evento tem { title, description, category }
-  let events = JSON.parse(localStorage.getItem('neveduEvents')) || {};
+(() => {
+  'use strict';
 
   const categoryColors = {
-    'Matemática': '#27ae60',
-    'História': '#e67e22',
-    'Prova': '#c0392b',
-    'Reunião': '#2980b9',
-    'Outro': '#8e44ad'
+    aula: '#1e90ff',
+    evento: '#ff6347',
+    reuniao: '#32cd32',
+    prova: '#ffb400',
   };
 
+  // DOM Elements
+  const calendarBody = document.getElementById('calendarBody');
+  const monthYearLabel = document.getElementById('monthYearLabel');
+  const prevMonthBtn = document.getElementById('prevMonth');
+  const nextMonthBtn = document.getElementById('nextMonth');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const searchInput = document.getElementById('searchInput');
+  const addEventBtn = document.getElementById('addEventBtn');
+
+  const modalOverlay = document.getElementById('modalOverlay');
+  const eventForm = document.getElementById('eventForm');
+  const eventIndexInput = document.getElementById('eventIndex');
+  const eventDateInput = document.getElementById('eventDate');
+  const eventTitleInput = document.getElementById('eventTitle');
+  const eventCategorySelect = document.getElementById('eventCategory');
+  const eventDescriptionInput = document.getElementById('eventDescription');
+  const btnCancel = document.getElementById('btnCancel');
+  const btnDelete = document.getElementById('btnDelete');
+  const btnSave = document.getElementById('btnSave');
+  const notification = document.getElementById('notification');
+
+  // Estado
+  let events = [];
+  let currentDate = new Date();
+  let filteredCategory = 'all';
+  let filteredSearch = '';
+  
+  // Helpers
+  function formatDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth()+1).padStart(2,'0');
+    const d = String(date.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+  function parseDate(str) {
+    const parts = str.split('-');
+    return new Date(parts[0], parts[1]-1, parts[2]);
+  }
+  function showNotification(msg) {
+    notification.textContent = msg;
+    notification.classList.add('show');
+    setTimeout(() => notification.classList.remove('show'), 3000);
+  }
   function saveEvents() {
-    localStorage.setItem('neveduEvents', JSON.stringify(events));
+    localStorage.setItem('nevedu_events', JSON.stringify(events));
+  }
+  function loadEvents() {
+    const evs = localStorage.getItem('nevedu_events');
+    if(evs) {
+      try {
+        events = JSON.parse(evs);
+      } catch {
+        events = [];
+      }
+    }
+  }
+  
+  // Renderiza label mês/ano
+  function updateMonthYearLabel() {
+    const options = { month: 'long', year: 'numeric' };
+    const label = currentDate.toLocaleDateString('pt-BR', options);
+    monthYearLabel.textContent = label.charAt(0).toUpperCase() + label.slice(1);
   }
 
+  // Criar elemento evento no calendário
+  function createEventElement(event, day, index) {
+    // Filtro categoria e busca
+    if(filteredCategory !== 'all' && event.category !== filteredCategory) return null;
+    if(filteredSearch && !event.title.toLowerCase().includes(filteredSearch.toLowerCase())) return null;
+
+    const div = document.createElement('div');
+    div.className = 'event-item';
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('role', 'button');
+    div.setAttribute('aria-label', `${event.title}, categoria: ${event.category}`);
+    div.dataset.index = index;
+    div.dataset.date = day;
+
+    const colorMark = document.createElement('span');
+    colorMark.className = 'color-mark';
+    colorMark.style.backgroundColor = categoryColors[event.category] || '#0077c8';
+    div.appendChild(colorMark);
+
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'title';
+    titleSpan.textContent = event.title;
+    div.appendChild(titleSpan);
+
+    // Botão excluir no evento
+    const delBtn = document.createElement('button');
+    delBtn.className = 'delete-btn';
+    delBtn.setAttribute('aria-label', `Excluir evento ${event.title}`);
+    delBtn.innerHTML = '×';
+    delBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      if(confirm(`Excluir evento "${event.title}"?`)) {
+        events.splice(index, 1);
+        saveEvents();
+        renderCalendar();
+        showNotification('Evento excluído');
+      }
+    });
+    div.appendChild(delBtn);
+
+    // Clique abre modal edição
+    div.addEventListener('click', () => openModal(day, index));
+
+    return div;
+  }
+
+  // Renderiza calendário mensal
   function renderCalendar() {
+    updateMonthYearLabel();
     calendarBody.innerHTML = '';
+
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-    const firstWeekDay = firstDay.getDay();
+    const startDayIndex = firstDay.getDay(); // Domingo = 0
+    const totalDays = lastDay.getDate();
 
-    monthYear.textContent = `${firstDay.toLocaleString('pt-BR', { month: 'long' })} ${year}`;
+    let dayCounter = 1;
 
-    let dayCount = 1;
-    let finished = false;
+    for(let row = 0; row < 6; row++) {
+      const tr = document.createElement('tr');
 
-    const filterCategory = categoryFilter.value;
+      for(let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+        const td = document.createElement('td');
+        td.setAttribute('role', 'gridcell');
 
-    for (let week = 0; week < 6; week++) {
-      if (finished) break;
-      let tr = document.createElement('tr');
-
-      for (let d = 0; d < 7; d++) {
-        let td = document.createElement('td');
-
-        if (week === 0 && d < firstWeekDay) {
+        if(row === 0 && dayOfWeek < startDayIndex) {
+          td.classList.add('empty');
           td.textContent = '';
-        } else if (dayCount > lastDay.getDate()) {
+        } else if(dayCounter > totalDays) {
+          td.classList.add('empty');
           td.textContent = '';
-          finished = true;
         } else {
-          const dayStr = `${year}-${String(month+1).padStart(2, '0')}-${String(dayCount).padStart(2, '0')}`;
-          td.innerHTML = `<div class="day-number">${dayCount}</div>`;
+          const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(dayCounter).padStart(2,'0')}`;
+          td.dataset.date = dateStr;
 
-          // Filtrar eventos por categoria
-          const dayEvents = events[dayStr] ? events[dayStr].filter(ev => filterCategory === 'all' || ev.category === filterCategory) : [];
-
-          if (dayEvents.length) {
-            td.classList.add('event-day');
-            const eventsDiv = document.createElement('div');
-            eventsDiv.classList.add('events');
-
-            dayEvents.forEach((ev, idx) => {
-              const evDiv = document.createElement('div');
-              evDiv.classList.add('event-item');
-              evDiv.title = `${ev.title}\n${ev.description || ''}`;
-
-              const colorBox = document.createElement('span');
-              colorBox.classList.add('event-color');
-              colorBox.style.backgroundColor = categoryColors[ev.category] || '#7f8c8d';
-
-              const titleSpan = document.createElement('span');
-              titleSpan.classList.add('event-title');
-              titleSpan.textContent = ev.title;
-
-              evDiv.appendChild(colorBox);
-              evDiv.appendChild(titleSpan);
-
-              // Botão para editar evento diretamente
-              evDiv.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openModal(dayStr, idx);
-              });
-
-              eventsDiv.appendChild(evDiv);
-            });
-
-            td.appendChild(eventsDiv);
+          // Destacar hoje
+          const today = new Date();
+          if(dateStr === formatDate(today)) {
+            td.classList.add('today');
           }
 
-          td.addEventListener('click', () => openModal(dayStr));
+          // Número do dia
+          const dayNum = document.createElement('div');
+          dayNum.className = 'day-number';
+          dayNum.textContent = dayCounter;
+          td.appendChild(dayNum);
 
-          dayCount++;
+          // Eventos do dia
+          events.forEach((event, i) => {
+            if(event.date === dateStr) {
+              const eventElem = createEventElement(event, dateStr, i);
+              if(eventElem) td.appendChild(eventElem);
+            }
+          });
+
+          // Clique no dia abre modal novo evento
+          td.addEventListener('click', e => {
+            if(e.target === td || e.target === dayNum) openModal(dateStr);
+          });
+
+          dayCounter++;
         }
-
         tr.appendChild(td);
       }
-
       calendarBody.appendChild(tr);
     }
   }
 
-  function openModal(dayStr, eventIndex = null) {
-    selectedDay = dayStr;
-    editingEventIndex = eventIndex;
+  // Abre modal para novo ou editar evento
+  function openModal(dateStr, index = null) {
+    modalOverlay.classList.add('active');
+    eventForm.reset();
+    eventIndexInput.value = '';
+    btnDelete.style.display = 'none';
 
-    if (eventIndex === null) {
-      modalTitle.textContent = 'Adicionar Evento';
-      eventTitleInput.value = '';
-      eventDescInput.value = '';
-      eventCategorySelect.value = '';
-      deleteEventBtn.style.display = 'none';
-    } else {
-      modalTitle.textContent = 'Editar Evento';
-      const ev = events[dayStr][eventIndex];
+    eventDateInput.value = dateStr;
+    eventDateInput.setAttribute('aria-label', `Data do evento ${dateStr}`);
+
+    if(index !== null && events[index]) {
+      const ev = events[index];
+      eventIndexInput.value = index;
       eventTitleInput.value = ev.title;
-      eventDescInput.value = ev.description;
-      eventCategorySelect.value = ev.category || '';
-      deleteEventBtn.style.display = 'inline-block';
+      eventCategorySelect.value = ev.category;
+      eventDescriptionInput.value = ev.description || '';
+      btnDelete.style.display = 'inline-block';
     }
-
-    eventModal.style.display = 'block';
     eventTitleInput.focus();
   }
 
+  // Fecha modal
   function closeModal() {
-    eventModal.style.display = 'none';
-    editingEventIndex = null;
-    selectedDay = null;
+    modalOverlay.classList.remove('active');
   }
 
+  // Salva evento do formulário
   eventForm.addEventListener('submit', e => {
     e.preventDefault();
-    if (!selectedDay) return;
 
-    const newEvent = {
-      title: eventTitleInput.value.trim(),
-      description: eventDescInput.value.trim(),
-      category: eventCategorySelect.value
-    };
+    const title = eventTitleInput.value.trim();
+    const category = eventCategorySelect.value;
+    const description = eventDescriptionInput.value.trim();
+    const date = eventDateInput.value;
+    const index = eventIndexInput.value;
 
-    if (!events[selectedDay]) {
-      events[selectedDay] = [];
+    if(!title || !category) {
+      alert('Preencha título e categoria');
+      return;
     }
 
-    if (editingEventIndex !== null) {
-      // Editar evento
-      events[selectedDay][editingEventIndex] = newEvent;
+    if(index !== '') {
+      // Editar
+      events[index] = { title, category, description, date };
+      showNotification('Evento atualizado');
     } else {
-      // Adicionar evento novo
-      events[selectedDay].push(newEvent);
+      // Novo
+      events.push({ title, category, description, date });
+      showNotification('Evento adicionado');
     }
-
     saveEvents();
     renderCalendar();
     closeModal();
   });
 
-  deleteEventBtn.addEventListener('click', () => {
-    if (selectedDay !== null && editingEventIndex !== null) {
-      events[selectedDay].splice(editingEventIndex, 1);
-      if (events[selectedDay].length === 0) {
-        delete events[selectedDay];
+  btnCancel.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e => {
+    if(e.target === modalOverlay) closeModal();
+  });
+
+  btnDelete.addEventListener('click', () => {
+    const index = eventIndexInput.value;
+    if(index !== '') {
+      if(confirm('Deseja realmente excluir este evento?')) {
+        events.splice(index, 1);
+        saveEvents();
+        renderCalendar();
+        closeModal();
+        showNotification('Evento excluído');
       }
-      saveEvents();
-      renderCalendar();
-      closeModal();
     }
   });
 
-  closeModalBtn.addEventListener('click', closeModal);
-  window.addEventListener('click', e => {
-    if (e.target === eventModal) {
-      closeModal();
-    }
-  });
-
+  // Navegação mês
   prevMonthBtn.addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
     renderCalendar();
   });
-
   nextMonthBtn.addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
     renderCalendar();
   });
 
-  categoryFilter.addEventListener('change', renderCalendar);
+  // Filtro categoria
+  categoryFilter.addEventListener('change', e => {
+    filteredCategory = e.target.value;
+    renderCalendar();
+  });
 
+  // Busca texto
+  searchInput.addEventListener('input', e => {
+    filteredSearch = e.target.value.trim();
+    renderCalendar();
+  });
+
+  // Botão novo evento abre modal com data hoje
+  addEventBtn.addEventListener('click', () => {
+    const todayStr = formatDate(new Date());
+    openModal(todayStr);
+  });
+
+  // Inicializa
+  loadEvents();
   renderCalendar();
+
+  // Acessibilidade: fechar modal com ESC
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+      closeModal();
+    }
+  });
+
+})();
 </script>
 
 </body>
