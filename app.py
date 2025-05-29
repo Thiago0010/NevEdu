@@ -211,6 +211,10 @@ def upload_foto():
 # -------------------------
 # IA INTERATIVA
 # -------------------------
+@app.route('/agenda')
+def agenda():
+    return render_template('agenda.html')
+
 @app.route('/ia')
 def ia():
     return render_template('ia.html')
