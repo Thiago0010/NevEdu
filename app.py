@@ -1,13 +1,18 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 from datetime import datetime
+import json
+import os
 
 app = Flask(__name__)
 app.secret_key = '123456'
 
+# Conexão com o banco de dados
 def conectar():
     return sqlite3.connect('database.db')
 
+# Criar tabelas do banco
 def criar_banco():
     conn = conectar()
     cursor = conn.cursor()
@@ -43,24 +48,59 @@ def criar_banco():
     conn.commit()
     conn.close()
 
+# Página inicial (home)
 @app.route('/')
+def home():
+    return render_template('home.html')
+
+# Página de cadastro
+@app.route('/cadastro', methods=['GET', 'POST'])
+def cadastro():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        email = request.form['email']
+        senha = request.form['senha']
+        confirmar = request.form['confirmar']
+
+        if senha != confirmar:
+            flash('Senhas não coincidem!')
+            return redirect(url_for('cadastro'))
+
+        try:
+            senha_hash = generate_password_hash(senha)
+            conn = conectar()
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)', (nome, email, senha_hash))
+            conn.commit()
+            conn.close()
+            flash('Cadastro realizado com sucesso! Faça login.')
+            return redirect(url_for('index'))
+        except sqlite3.IntegrityError:
+            flash('E-mail já cadastrado.')
+            return redirect(url_for('cadastro'))
+
+    return render_template('cadastro.html')
+
+# Página de login
+@app.route('/index')
 def index():
-    if 'usuario_id' in session:
-        return redirect(url_for('dashboard'))
     return render_template('index.html')
 
 @app.route('/login', methods=['POST'])
 def login():
     email = request.form['email']
     senha = request.form['senha']
+    token = request.form.get('g-recaptcha-response')
+
+    # Aqui você pode adicionar verificação do token com o Google se quiser usar reCAPTCHA
 
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute('SELECT id, nome FROM usuarios WHERE email=? AND senha=?', (email, senha))
+    cursor.execute('SELECT id, nome, senha FROM usuarios WHERE email=?', (email,))
     user = cursor.fetchone()
     conn.close()
 
-    if user:
+    if user and check_password_hash(user[2], senha):
         session['usuario_id'] = user[0]
         session['usuario_nome'] = user[1]
         return redirect(url_for('dashboard'))
@@ -68,17 +108,14 @@ def login():
         flash('Email ou senha inválidos.')
         return redirect(url_for('index'))
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('index'))
-
+# Página dashboard
 @app.route('/dashboard')
 def dashboard():
     if 'usuario_id' not in session:
         return redirect(url_for('index'))
     return render_template('dashboard.html', nome=session['usuario_nome'])
 
+# Página perfil
 @app.route('/perfil')
 def perfil():
     if 'usuario_id' not in session:
@@ -86,7 +123,6 @@ def perfil():
         return redirect(url_for('index'))
 
     usuario_id = session['usuario_id']
-
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute('SELECT nome, ano_escolar, inicio_escolar, foto FROM usuarios WHERE id=?', (usuario_id,))
@@ -98,6 +134,7 @@ def perfil():
 
     nome, ano_escolar, inicio_escolar, foto = user
 
+    # Cálculo do progresso escolar
     try:
         hoje = datetime.now().date()
         inicio = datetime.strptime(inicio_escolar, '%Y-%m-%d').date()
@@ -109,9 +146,11 @@ def perfil():
     except:
         progresso = 0
 
+    # Cursos concluídos
     cursor.execute('SELECT nome, data_conclusao FROM historico_cursos WHERE usuario_id=? ORDER BY data_conclusao DESC', (usuario_id,))
     historico_cursos = [{'nome': row[0], 'data_conclusao': datetime.strptime(row[1], '%Y-%m-%d')} for row in cursor.fetchall()]
 
+    # Badges
     cursor.execute('SELECT nome, icone FROM badges WHERE usuario_id=?', (usuario_id,))
     badges = [{'nome': row[0], 'icone': row[1]} for row in cursor.fetchall()]
 
@@ -119,6 +158,7 @@ def perfil():
 
     return render_template('perfil.html', nome=nome, ano=ano_escolar or 'Não informado', inicio_escolar=inicio_escolar or '', progresso=progresso, foto=foto, historico_cursos=historico_cursos, badges=badges)
 
+# Atualizar perfil
 @app.route('/perfil/atualizar', methods=['POST'])
 def atualizar_perfil():
     if 'usuario_id' not in session:
@@ -140,9 +180,9 @@ def atualizar_perfil():
     conn.close()
 
     session['usuario_nome'] = nome
-
     return jsonify({'sucesso': True})
 
+# Upload de foto
 @app.route('/perfil/upload_foto', methods=['POST'])
 def upload_foto():
     if 'usuario_id' not in session:
@@ -166,35 +206,31 @@ def upload_foto():
 
     return jsonify({'sucesso': True, 'caminho': caminho})
 
-@app.route('/cadastro', methods=['GET', 'POST'])
-def cadastro():
-    if request.method == 'POST':
-        nome = request.form['nome']
-        email = request.form['email']
-        senha = request.form['senha']
-        confirmar = request.form['confirmar']
+# Logout
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
-        if senha != confirmar:
-            flash('Senhas não coincidem!')
-            return redirect(url_for('cadastro'))
+# Interface da IA
+@app.route('/ia')
+def ia():
+    return render_template('ia.html')
 
-        try:
-            conn = conectar()
-            cursor = conn.cursor()
-            cursor.execute('INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)', (nome, email, senha))
-            conn.commit()
-            conn.close()
-            flash('Cadastro realizado com sucesso!')
-            return redirect(url_for('index'))
-        except sqlite3.IntegrityError:
-            flash('E-mail já cadastrado.')
-            return redirect(url_for('cadastro'))
-    return render_template('cadastro.html')
+# Resposta da IA (respostas predefinidas via JSON)
+@app.route('/ia', methods=['POST'])
+def ia_resposta():
+    data = request.get_json()
+    pergunta = data.get('pergunta', '').strip().lower()
 
-@app.route('/home')
-def home():
-    return render_template('home.html')
+    with open('data/respostas.json', encoding='utf-8') as f:
+        respostas = json.load(f)
 
+    resposta = respostas.get(pergunta, "Desculpe, ainda não sei responder isso 😢")
+
+    return jsonify({'resposta': resposta})
+
+# Inicializar o app
 if __name__ == '__main__':
     criar_banco()
     app.run(debug=True)

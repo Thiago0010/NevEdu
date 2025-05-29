@@ -475,3 +475,7 @@ body.dark-mode .ia-preview input {
   transform: translateY(-5px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
+.ia-placeholder a{
+  text-decoration: none;
+  color: #f9f9f9
+}

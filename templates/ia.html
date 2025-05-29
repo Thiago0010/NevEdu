@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>NevEdu | Assistente IA</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      padding: 20px;
+      background: #1e293b;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 2px solid #3b82f6;
+      animation: slideInTop 0.8s ease;
+    }
+
+    #chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+      animation: fadeIn 1s ease;
+    }
+
+    .mensagem {
+      max-width: 70%;
+      padding: 12px 18px;
+      margin: 10px 0;
+      border-radius: 20px;
+      animation: pop 0.3s ease;
+    }
+
+    .usuario {
+      align-self: flex-end;
+      background-color: #2563eb;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background-color: #1e40af;
+    }
+
+    form {
+      display: flex;
+      padding: 15px;
+      background: #1e293b;
+      border-top: 2px solid #3b82f6;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0 20px;
+      margin-left: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInTop {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>🎓 Assistente NevEdu</header>
+
+  <div id="chat-container">
+    <div class="mensagem bot">Olá! Sou sua assistente da NevEdu. Como posso te ajudar hoje?</div>
+  </div>
+
+  <form id="form-mensagem">
+    <input type="text" id="pergunta" placeholder="Digite sua pergunta..." required autocomplete="off">
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('form-mensagem');
+    const input = document.getElementById('pergunta');
+    const chat = document.getElementById('chat-container');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pergunta = input.value.trim();
+      if (!pergunta) return;
+
+      adicionarMensagem(pergunta, 'usuario');
+      input.value = '';
+
+      const resposta = await fetch('/ia', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ pergunta })
+      }).then(r => r.json());
+
+      adicionarMensagem(resposta.resposta, 'bot');
+    });
+
+    function adicionarMensagem(texto, classe) {
+      const msg = document.createElement('div');
+      msg.classList.add('mensagem', classe);
+      msg.textContent = texto;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>

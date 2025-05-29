@@ -141,3 +141,27 @@ nav a {
   font-size: 14px;
   color: #666;
 }
+
+.hero-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* para adaptar no celular */
+  gap: 40px;
+}
+
+.hero-grid .texto {
+  flex: 1;
+  min-width: 300px;
+}
+
+.hero-grid .imagem {
+  flex: 1;
+  text-align: right;
+}
+
+.hero-grid .imagem img {
+  max-width: 100%;
+  width: 400px;       /* controla o tamanho da imagem */
+  height: auto;
+}
