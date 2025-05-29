@@ -22,7 +22,7 @@
         <input type="file" id="inputFoto" accept="image/*" hidden />
       </div>
       <div class="usuario-info">
-        <h1 id="nomeUsuario">{{ nome }}</h1>
+        <h2 id="nomeUsuario">{{ nome }}</h2>
         <button class="btn-editar" id="btnEditarPerfil">Editar Perfil</button>
         <button class="btn-logout" onclick="window.location.href='{{ url_for('logout') }}'">Sair</button>
       </div>
@@ -111,6 +111,33 @@
 
   </main>
 
+  <main>
+    <!-- Dashboard Análise -->
+    <section class="card" aria-label="Análise de desempenho dos alunos">
+      <h2>📊 Desempenho dos Alunos</h2>
+      <canvas id="performanceChart" aria-describedby="alerts"></canvas>
+      <div id="alerts" aria-live="polite" role="alert" aria-atomic="true"></div>
+    </section>
+
+    <!-- Monitoramento Bem-estar -->
+    <section class="card" aria-label="Monitoramento de bem-estar">
+      <h2>💙 Como você está hoje?</h2>
+      <form id="wellbeingForm" aria-label="Formulário de monitoramento de bem-estar">
+        <label for="mood">Selecione seu humor:</label>
+        <select id="mood" required aria-required="true" aria-describedby="moodHelp">
+          <option value="" disabled selected>Escolha uma opção</option>
+          <option value="1">😞 Muito mal</option>
+          <option value="2">😐 Mal</option>
+          <option value="3">😌 Normal</option>
+          <option value="4">🙂 Bem</option>
+          <option value="5">😄 Muito bem</option>
+        </select>
+        <button type="submit" aria-label="Enviar resposta de bem-estar">Enviar</button>
+      </form>
+      <div id="msgSuccess" role="status" aria-live="polite">Resposta enviada com sucesso! Obrigado!</div>
+      <canvas id="wellbeingChart" aria-label="Gráfico de distribuição do bem-estar dos alunos" style="margin-top: 1.5rem;"></canvas>
+    </section>
+  </main>
   <script>
     // Modal editar perfil
     const btnEditar = document.getElementById('btnEditarPerfil');
@@ -196,6 +223,172 @@
         btnToggleTema.textContent = '🌙';
         localStorage.setItem('tema', 'claro');
       }
+    });
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Dados fictícios
+    const alunos = [
+      { nome: 'Alice', nota: 85, frequencia: 92 },
+      { nome: 'Bruno', nota: 55, frequencia: 80 },
+      { nome: 'Carla', nota: 72, frequencia: 95 },
+      { nome: 'Daniel', nota: 60, frequencia: 70 },
+      { nome: 'Eva', nota: 90, frequencia: 98 },
+      { nome: 'Felipe', nota: 45, frequencia: 65 },
+    ];
+
+    // Setup gráfico desempenho
+    const ctxPerf = document.getElementById('performanceChart').getContext('2d');
+    const performanceChart = new Chart(ctxPerf, {
+      type: 'bar',
+      data: {
+        labels: alunos.map(a => a.nome),
+        datasets: [
+          {
+            label: 'Nota (%)',
+            data: alunos.map(a => a.nota),
+            backgroundColor: 'rgba(0, 249, 255, 0.85)',
+            borderRadius: 6,
+          },
+          {
+            label: 'Frequência (%)',
+            data: alunos.map(a => a.frequencia),
+            backgroundColor: 'rgba(255, 193, 7, 0.85)',
+            borderRadius: 6,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              color: '#c0c0ff',
+              stepSize: 10
+            },
+            grid: {
+              color: '#0a0a20'
+            }
+          },
+          x: {
+            ticks: {
+              color: '#80d8ff',
+              font: {
+                weight: 'bold'
+              }
+            },
+            grid: {
+              display: false
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#80d8ff',
+              font: {
+                weight: '600',
+                size: 14
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#00f9ffcc',
+            titleColor: '#12122b',
+            bodyColor: '#12122b',
+            cornerRadius: 8,
+            displayColors: false
+          }
+        }
+      }
+    });
+
+    // Alerts de reforço
+    const alertsDiv = document.getElementById('alerts');
+    function atualizarAlertas(){
+      alertsDiv.innerHTML = '';
+      alunos.forEach(a => {
+        if(a.nota < 60 || a.frequencia < 75){
+          const div = document.createElement('div');
+          div.classList.add('alert');
+          div.textContent = `${a.nome} precisa de reforço (Nota: ${a.nota}%, Frequência: ${a.frequencia}%)`;
+          alertsDiv.appendChild(div);
+        }
+      });
+      if(alertsDiv.children.length === 0){
+        alertsDiv.innerHTML = '<p style="text-align:center; color:#40ffb0; font-weight:700;">Todos os alunos estão indo bem! 🎉</p>';
+      }
+    }
+    atualizarAlertas();
+
+    // Monitoramento Bem-estar
+    const form = document.getElementById('wellbeingForm');
+    const moodSelect = document.getElementById('mood');
+    const msgSuccess = document.getElementById('msgSuccess');
+    const ctxWell = document.getElementById('wellbeingChart').getContext('2d');
+
+    // Simulação de dados de bem-estar (fictícios)
+    let wellbeingData = [3, 5, 15, 8, 10]; // index = humor 1-5
+
+    const wellbeingChart = new Chart(ctxWell, {
+      type: 'doughnut',
+      data: {
+        labels: ['😞 Muito mal', '😐 Mal', '😌 Normal', '🙂 Bem', '😄 Muito bem'],
+        datasets: [{
+          data: wellbeingData,
+          backgroundColor: [
+            '#ff0033',
+            '#ff6600',
+            '#ffaa00',
+            '#00c2ff',
+            '#00ffab'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '70%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#80d8ff',
+              font: { weight: '600', size: 14 }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#00f9ffcc',
+            titleColor: '#12122b',
+            bodyColor: '#12122b',
+            cornerRadius: 6
+          }
+        }
+      }
+    });
+
+    // Envio do formulário
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const moodValue = Number(moodSelect.value);
+      if(!moodValue) return;
+
+      // Atualiza dados e gráfico
+      wellbeingData[moodValue - 1]++;
+      wellbeingChart.data.datasets[0].data = wellbeingData;
+      wellbeingChart.update();
+
+      // Mostrar mensagem e resetar form
+      msgSuccess.classList.add('show');
+      setTimeout(() => msgSuccess.classList.remove('show'), 2500);
+      form.reset();
     });
   </script>
 </body>

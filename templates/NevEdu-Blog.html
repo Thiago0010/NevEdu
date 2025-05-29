@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NevEdu Tech</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --text: #ffffffdd;
+      --accent: #00bcd4;
+      --border: #333;
+      --input-bg: #2a2a2a;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--card);
+      padding: 1rem 2rem;
+      font-size: 1.8rem;
+      border-bottom: 1px solid var(--border);
+      user-select: none;
+    }
+    nav {
+      display: flex;
+      background: #1a1a1a;
+      border-bottom: 1px solid var(--border);
+    }
+    nav button {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text);
+      padding: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    nav button:hover:not(.active-tab) {
+      background: #333;
+    }
+    .active-tab {
+      background: var(--accent);
+      color: black;
+      font-weight: bold;
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    section {
+      display: none;
+    }
+    section.active {
+      display: block;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      word-wrap: break-word;
+    }
+    .card h3 {
+      margin-top: 0;
+    }
+    .input-group {
+      margin-bottom: 1rem;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-top: 0.25rem;
+      background: var(--input-bg);
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      resize: vertical;
+    }
+    button {
+      cursor: pointer;
+    }
+    .btn-accent {
+      background: var(--accent);
+      color: black;
+      border: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .btn-accent:hover {
+      background: #0097a7;
+    }
+    .comment, .reply {
+      margin-top: 0.75rem;
+      padding-left: 1rem;
+      border-left: 3px solid var(--accent);
+      font-size: 0.9rem;
+      background: #292929;
+      border-radius: 4px;
+    }
+    .comment-header, .reply-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    .like-btn {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .like-btn:hover {
+      color: #00e5ff;
+    }
+    .small-input {
+      width: auto;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.9rem;
+      margin-top: 0;
+      margin-left: 0.5rem;
+    }
+    .reply-box {
+      margin-top: 0.5rem;
+    }
+    .no-posts {
+      color: #777;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <header>NevEdu Blog</header>
+
+  <nav>
+    <button class="active-tab" data-tab="blog">Blog</button>
+    <button data-tab="forum">Comunidade</button>
+  </nav>
+
+  <main>
+    <!-- BLOG -->
+    <section id="blog" class="active">
+      <h2>📰 Blog</h2>
+      <div class="input-group">
+        <input id="blogTitle" placeholder="Título do post" />
+        <select id="blogCategory">
+          <option value="Notícia">Notícia</option>
+          <option value="Projeto">Projeto</option>
+          <option value="Evento">Evento</option>
+        </select>
+        <textarea id="blogContent" rows="4" placeholder="Escreva aqui..."></textarea>
+        <button class="btn-accent" onclick="addBlogPost()">Publicar</button>
+      </div>
+      <div id="blogPosts"></div>
+    </section>
+
+    <!-- COMUNIDADE -->
+    <section id="forum">
+      <h2>💬 Comunidade</h2>
+      <div class="input-group">
+        <input id="topicTitle" placeholder="Título do tópico" />
+        <textarea id="topicDesc" rows="3" placeholder="Descreva o assunto..."></textarea>
+        <button class="btn-accent" onclick="addTopic()">Criar Tópico</button>
+      </div>
+      <div id="forumTopics"></div>
+    </section>
+  </main>
+
+  <script>
+    // Controle de abas
+    const tabs = document.querySelectorAll('nav button');
+    const sections = document.querySelectorAll('main > section');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active-tab'));
+        tab.classList.add('active-tab');
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ====== BLOG ======
+
+    let blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+
+    function saveBlog() {
+      localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+    }
+
+    function addBlogPost() {
+      const title = document.getElementById('blogTitle').value.trim();
+      const category = document.getElementById('blogCategory').value;
+      const content = document.getElementById('blogContent').value.trim();
+      if (!title || !content) {
+        alert('Preencha título e conteúdo do post.');
+        return;
+      }
+      const newPost = {
+        id: Date.now(),
+        title,
+        category,
+        content,
+        comments: []
+      };
+      blogPosts.push(newPost);
+      saveBlog();
+      renderBlog();
+      document.getElementById('blogTitle').value = '';
+      document.getElementById('blogContent').value = '';
+    }
+
+    function renderBlog() {
+      const container = document.getElementById('blogPosts');
+      container.innerHTML = '';
+      if (blogPosts.length === 0) {
+        container.innerHTML = '<p class="no-posts">Nenhum post ainda. Seja o primeiro a publicar!</p>';
+        return;
+      }
+      // Mostrar posts do mais recente ao mais antigo
+      blogPosts.slice().reverse().forEach(post => {
+        const postEl = document.createElement('div');
+        postEl.className = 'card';
+        postEl.innerHTML = `
+          <h3>${post.title}</h3>
+          <p><strong>Categoria:</strong> ${post.category}</p>
+          <p>${post.content.replace(/\n/g, '<br>')}</p>
+          <hr>
+          <h4>Comentários (${post.comments.length})</h4>
+          <div id="comments-${post.id}"></div>
+          <div class="input-group">
+            <input id="commentName-${post.id}" placeholder="Seu nome" />
+            <textarea id="commentContent-${post.id}" rows="2" placeholder="Comentário..."></textarea>
+            <button class="btn-accent" onclick="addComment(${post.id})">Comentar</button>
+          </div>
+        `;
+        container.appendChild(postEl);
+        renderComments(post.id);
+      });
+    }
+
+    function addComment(postId) {
+      const nameInput = document.getElementById(`commentName-${postId}`);
+      const contentInput = document.getElementById(`commentContent-${postId}`);
+      const name = nameInput.value.trim() || 'Anônimo';
+      const content = contentInput.value.trim();
+      if (!content) {
+        alert('Comentário vazio não é permitido.');
+        return;
+      }
+      const postIndex = blogPosts.findIndex(p => p.id === postId);
+      if (postIndex === -1) return;
+      blogPosts[postIndex].comments.push({
+        id: Date.now(),
+        name,
+        content,
+        replies: []
+      });
+      saveBlog();
+      renderBlog();
+    }
+
+    function renderComments(postId) {
+      const container = document.getElementById(`comments-${postId}`);
+      const post = blogPosts.find(p => p.id === postId);
+      if (!post || !container) return;
+      container.innerHTML = '';
+      post.comments.forEach(comment => {
+        const commentEl = document.createElement('div');
+        commentEl.className = 'comment';
+        commentEl.innerHTML = `
+          <div class="comment-header">
+            <span>${comment.name}</span>
+          </div>
+          <p>${comment.content.replace(/\n/g, '<br>')}</p>
+          <div id="replies-${comment.id}"></div>
+          <button class="like-btn" onclick="likeComment(${postId}, ${comment.id})">
+            👍 <span id="likes-count-${postId}-${comment.id}">${comment.likes || 0}</span>
+          </button>
+          <button class="like-btn" onclick="showReplyBox(${postId}, ${comment.id})">Responder</button>
+          <div id="reply-box-${comment.id}" class="reply-box" style="display:none;">
+            <input id="replyName-${comment.id}" placeholder="Seu nome" class="small-input" />
+            <textarea id="replyContent-${comment.id}" rows="2" placeholder="Sua resposta..."></textarea>
+            <button class="btn-accent" onclick="addReply(${postId}, ${comment.id})">Enviar</button>
+          </div>
+        `;
+        container.appendChild(commentEl);
+        renderReplies(postId, comment.id);
+      });
+    }
+
+    function likeComment(postId, commentId) {
+      const postIndex = blogPosts.findIndex(p => p.id === postId);
+      if (postIndex === -1) return;
+      const comment = blogPosts[postIndex].comments.find(c => c.id === commentId);
+      if (!comment) return;
+      comment.likes = (comment.likes || 0) + 1;
+      saveBlog();
+      document.getElementById(`likes-count-${postId}-${commentId}`).textContent = comment.likes;
+    }
+
+    function showReplyBox(postId, commentId) {
+      const box = document.getElementById(`reply-box-${commentId}`);
+      if (box.style.display === 'none') {
+        box.style.display = 'block';
+      } else {
+        box.style.display = 'none';
+      }
+    }
+
+    function addReply(postId, commentId) {
+      const nameInput = document.getElementById(`replyName-${commentId}`);
+      const contentInput = document.getElementById(`replyContent-${commentId}`);
+      const name = nameInput.value.trim() || 'Anônimo';
+      const content = contentInput.value.trim();
+      if (!content) {
+        alert('Resposta vazia não é permitida.');
+        return;
+      }
+      const postIndex = blogPosts.findIndex(p => p.id === postId);
+      if (postIndex === -1) return;
+      const comment = blogPosts[postIndex].comments.find(c => c.id === commentId);
+      if (!comment) return;
+      comment.replies.push({
+        id: Date.now(),
+        name,
+        content,
+        likes: 0
+      });
+      saveBlog();
+      renderBlog();
+    }
+
+    function renderReplies(postId, commentId) {
+      const container = document.getElementById(`replies-${commentId}`);
+      const post = blogPosts.find(p => p.id === postId);
+      if (!post || !container) return;
+      const comment = post.comments.find(c => c.id === commentId);
+      if (!comment) return;
+      container.innerHTML = '';
+      comment.replies.forEach(reply => {
+        const replyEl = document.createElement('div');
+        replyEl.className = 'reply';
+        replyEl.innerHTML = `
+          <div class="reply-header">
+            <span>${reply.name}</span>
+          </div>
+          <p>${reply.content.replace(/\n/g, '<br>')}</p>
+          <button class="like-btn" onclick="likeReply(${postId}, ${commentId}, ${reply.id})">
+            👍 <span id="likes-reply-${postId}-${commentId}-${reply.id}">${reply.likes || 0}</span>
+          </button>
+        `;
+        container.appendChild(replyEl);
+      });
+    }
+
+    function likeReply(postId, commentId, replyId) {
+      const postIndex = blogPosts.findIndex(p => p.id === postId);
+      if (postIndex === -1) return;
+      const comment = blogPosts[postIndex].comments.find(c => c.id === commentId);
+      if (!comment) return;
+      const reply = comment.replies.find(r => r.id === replyId);
+      if (!reply) return;
+      reply.likes = (reply.likes || 0) + 1;
+      saveBlog();
+      document.getElementById(`likes-reply-${postId}-${commentId}-${replyId}`).textContent = reply.likes;
+    }
+
+    // ====== COMUNIDADE (FÓRUM) ======
+
+    let forumTopics = JSON.parse(localStorage.getItem('forumTopics')) || [];
+
+    function saveForum() {
+      localStorage.setItem('forumTopics', JSON.stringify(forumTopics));
+    }
+
+    function addTopic() {
+      const title = document.getElementById('topicTitle').value.trim();
+      const desc = document.getElementById('topicDesc').value.trim();
+      if (!title || !desc) {
+        alert('Preencha título e descrição do tópico.');
+        return;
+      }
+      const newTopic = {
+        id: Date.now(),
+        title,
+        desc,
+        replies: []
+      };
+      forumTopics.push(newTopic);
+      saveForum();
+      renderForum();
+      document.getElementById('topicTitle').value = '';
+      document.getElementById('topicDesc').value = '';
+    }
+
+    function renderForum() {
+      const container = document.getElementById('forumTopics');
+      container.innerHTML = '';
+      if (forumTopics.length === 0) {
+        container.innerHTML = '<p class="no-posts">Nenhum tópico criado ainda. Crie um agora!</p>';
+        return;
+      }
+      forumTopics.slice().reverse().forEach(topic => {
+        const topicEl = document.createElement('div');
+        topicEl.className = 'card';
+        topicEl.innerHTML = `
+          <h3>${topic.title}</h3>
+          <p>${topic.desc.replace(/\n/g, '<br>')}</p>
+          <hr>
+          <h4>Respostas (${topic.replies.length})</h4>
+          <div id="forum-replies-${topic.id}"></div>
+          <div class="input-group">
+            <input id="replyNameForum-${topic.id}" placeholder="Seu nome" />
+            <textarea id="replyContentForum-${topic.id}" rows="2" placeholder="Responder..."></textarea>
+            <button class="btn-accent" onclick="addForumReply(${topic.id})">Enviar resposta</button>
+          </div>
+        `;
+        container.appendChild(topicEl);
+        renderForumReplies(topic.id);
+      });
+    }
+
+    function addForumReply(topicId) {
+      const nameInput = document.getElementById(`replyNameForum-${topicId}`);
+      const contentInput = document.getElementById(`replyContentForum-${topicId}`);
+      const name = nameInput.value.trim() || 'Anônimo';
+      const content = contentInput.value.trim();
+      if (!content) {
+        alert('Resposta vazia não é permitida.');
+        return;
+      }
+      const topicIndex = forumTopics.findIndex(t => t.id === topicId);
+      if (topicIndex === -1) return;
+      forumTopics[topicIndex].replies.push({
+        id: Date.now(),
+        name,
+        content,
+        likes: 0
+      });
+      saveForum();
+      renderForum();
+    }
+
+    function renderForumReplies(topicId) {
+      const container = document.getElementById(`forum-replies-${topicId}`);
+      const topic = forumTopics.find(t => t.id === topicId);
+      if (!topic || !container) return;
+      container.innerHTML = '';
+      topic.replies.forEach(reply => {
+        const replyEl = document.createElement('div');
+        replyEl.className = 'reply';
+        replyEl.innerHTML = `
+          <div class="reply-header">
+            <span>${reply.name}</span>
+          </div>
+          <p>${reply.content.replace(/\n/g, '<br>')}</p>
+          <button class="like-btn" onclick="likeForumReply(${topicId}, ${reply.id})">
+            👍 <span id="likes-forum-${topicId}-${reply.id}">${reply.likes || 0}</span>
+          </button>
+        `;
+        container.appendChild(replyEl);
+      });
+    }
+
+    function likeForumReply(topicId, replyId) {
+      const topicIndex = forumTopics.findIndex(t => t.id === topicId);
+      if (topicIndex === -1) return;
+      const reply = forumTopics[topicIndex].replies.find(r => r.id === replyId);
+      if (!reply) return;
+      reply.likes = (reply.likes || 0) + 1;
+      saveForum();
+      document.getElementById(`likes-forum-${topicId}-${replyId}`).textContent = reply.likes;
+    }
+
+    // Inicializa renderizações ao carregar a página
+    renderBlog();
+    renderForum();
+
+  </script>
+
+</body>
+</html>

@@ -381,3 +381,185 @@ body {
     justify-content: center;
   }
 }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+    body {
+      background: #0d0d18;
+      color: #c0c0ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    header {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 0.18em;
+      color: #60efff;
+      text-shadow:
+        0 0 10px #60efff,
+        0 0 30px #00b8f4,
+        0 0 60px #00b8f4;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    main {
+      background: linear-gradient(135deg, #12122b, #1a1a41);
+      border-radius: 20px;
+      max-width: 980px;
+      width: 100%;
+      padding: 2.5rem 3rem;
+      box-shadow:
+        0 0 20px #00d0ff88,
+        inset 0 0 40px #00d0ff33;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    /* Cards */
+    section.card {
+      background: #17172f;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow:
+        0 0 10px #00d0ff55,
+        inset 0 0 20px #004f6b55;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: default;
+    }
+    section.card:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 25px #00eaffcc,
+        inset 0 0 30px #00a8ffcc;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #00f9ff;
+      font-size: 1.9rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 5px #00f9ffbb;
+    }
+
+    /* Chart canvas */
+    canvas {
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00d0ff55;
+      background: linear-gradient(135deg, #111125, #1a1a3b);
+      padding: 1rem;
+    }
+
+    /* Alertas */
+    #alerts {
+      margin-top: 1.5rem;
+    }
+    .alert {
+      background: #ff004f;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.8rem;
+      border-radius: 10px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: #fff;
+      box-shadow: 0 0 10px #ff004fbb;
+      user-select: text;
+      text-align: center;
+    }
+
+    /* Form bem-estar */
+    form#wellbeingForm {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    label[for="mood"] {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #80d8ff;
+      user-select: none;
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 5px #00cfffbb;
+    }
+    select#mood {
+      padding: 0.75rem 1rem;
+      font-size: 1.1rem;
+      border-radius: 15px;
+      border: none;
+      background: #0d0d18;
+      color: #80d8ff;
+      box-shadow: inset 0 0 8px #00bfff88;
+      transition: box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    select#mood:hover, select#mood:focus {
+      box-shadow: 0 0 12px #00bfffdd;
+      outline: none;
+      color: #e0f7ff;
+      background: #0f243f;
+    }
+
+    button {
+      align-self: start;
+      background: #00f9ff;
+      color: #12122b;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 15px;
+      border: none;
+      padding: 0.9rem 2rem;
+      cursor: pointer;
+      box-shadow:
+        0 0 15px #00f9ffcc,
+        inset 0 0 10px #00b2e8cc;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+      user-select: none;
+    }
+    button:hover {
+      background: #00c2ff;
+      box-shadow:
+        0 0 20px #00c2ffdd,
+        inset 0 0 12px #0092dddd;
+    }
+
+    /* Mensagem de sucesso */
+    #msgSuccess {
+      margin-top: 1rem;
+      font-weight: 700;
+      color: #00ffab;
+      text-shadow: 0 0 5px #00ffabcc;
+      user-select: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    #msgSuccess.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Layout responsivo */
+    @media(max-width: 900px) {
+      main {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem 1rem;
+      }
+      section.card {
+        width: 100%;
+        margin-bottom: 2rem;
+        transform: none !important;
+      }
+    }

@@ -211,6 +211,10 @@ def upload_foto():
 # -------------------------
 # IA INTERATIVA
 # -------------------------
+@app.route('/Blog')
+def Blog():
+    return render_template('NevEdu-Blog.html')
+
 @app.route('/agenda')
 def agenda():
     return render_template('agenda.html')
