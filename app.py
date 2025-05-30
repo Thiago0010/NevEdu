@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 from datetime import datetime
 import json
+import requests
 
 app = Flask(__name__)
 app.secret_key = '123456'
@@ -49,15 +50,12 @@ def criar_banco():
     conn.close()
 
 # -------------------------
-# HOME
+# ROTAS BÁSICAS
 # -------------------------
 @app.route('/')
 def home():
     return render_template('home.html')
 
-# -------------------------
-# CADASTRO
-# -------------------------
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
@@ -82,12 +80,8 @@ def cadastro():
         except sqlite3.IntegrityError:
             flash('E-mail já cadastrado.')
             return redirect(url_for('cadastro'))
-
     return render_template('cadastro.html')
 
-# -------------------------
-# LOGIN
-# -------------------------
 @app.route('/index')
 def index():
     return render_template('index.html')
@@ -111,18 +105,12 @@ def login():
         flash('Email ou senha inválidos.')
         return redirect(url_for('index'))
 
-# -------------------------
-# DASHBOARD
-# -------------------------
 @app.route('/dashboard')
 def dashboard():
     if 'usuario_id' not in session:
         return redirect(url_for('index'))
     return render_template('dashboard.html', nome=session['usuario_nome'])
 
-# -------------------------
-# PERFIL
-# -------------------------
 @app.route('/perfil')
 def perfil():
     if 'usuario_id' not in session:
@@ -209,16 +197,42 @@ def upload_foto():
     return jsonify({'sucesso': True, 'caminho': caminho})
 
 # -------------------------
-# IA INTERATIVA
+# PESQUISA WIKIPEDIA
 # -------------------------
-@app.route('/Blog')
-def Blog():
-    return render_template('NevEdu-Blog.html')
+def pesquisar_wikipedia(pergunta):
+    try:
+        search_url = 'https://pt.wikipedia.org/w/api.php'
+        params = {
+            'action': 'query',
+            'list': 'search',
+            'srsearch': pergunta,
+            'format': 'json',
+            'utf8': 1,
+            'srlimit': 1
+        }
+        resp = requests.get(search_url, params=params, headers={'User-Agent': 'Mozilla/5.0'})
+        data = resp.json()
+        resultados = data.get('query', {}).get('search', [])
+        if not resultados:
+            return None
+        titulo = resultados[0]['title']
 
-@app.route('/agenda')
-def agenda():
-    return render_template('agenda.html')
+        resumo_url = 'https://pt.wikipedia.org/api/rest_v1/page/summary/' + titulo.replace(' ', '_')
+        resumo_resp = requests.get(resumo_url, headers={'User-Agent': 'Mozilla/5.0'})
+        if resumo_resp.status_code != 200:
+            return None
+        resumo_json = resumo_resp.json()
+        texto = resumo_json.get('extract', None)
+        if texto:
+            return texto
+        return None
+    except Exception as e:
+        print(f"Erro ao pesquisar Wikipedia: {e}")
+        return None
 
+# -------------------------
+# IA INTERATIVA (PERGUNTA E RESPOSTA)
+# -------------------------
 @app.route('/ia')
 def ia():
     return render_template('ia.html')
@@ -228,18 +242,35 @@ def ia_resposta():
     data = request.get_json()
     pergunta = data.get('pergunta', '').strip().lower()
 
-    with open('data/respostas.json', encoding='utf-8') as f:
-        respostas = json.load(f)
+    # Respostas pré-definidas em JSON
+    try:
+        with open('data/respostas.json', encoding='utf-8') as f:
+            respostas = json.load(f)
+    except Exception:
+        respostas = {}
+
+    # Saudações simples
+    saudações = {
+        'oi': 'Oi! Como posso ajudar você hoje?',
+        'olá': 'Olá! Em que posso ajudar?',
+        'tudo bem?': 'Tudo ótimo! E com você?',
+        'bom dia': 'Bom dia! Espero que tenha um ótimo dia!',
+        'boa tarde': 'Boa tarde! Como posso ajudar?',
+        'boa noite': 'Boa noite! Pronto para aprender algo novo?'
+    }
 
     if pergunta in respostas:
         return jsonify({'resposta': respostas[pergunta]})
-    else:
-        # Simular pesquisa + simplificação
-        resposta_original = f"[WEB] {pergunta} envolve lógica computacional e conceitos aplicáveis a diversas linguagens."
-        resposta_simplificada = "É um conceito essencial em tecnologia, normalmente usado para facilitar processos e resolver problemas."
+    elif pergunta in saudações:
+        return jsonify({'resposta': saudações[pergunta]})
 
-        print(f"[IA] Resposta original no terminal: {resposta_original}")
-        return jsonify({'resposta': resposta_simplificada})
+    # Pesquisa no Wikipedia como fallback para qualquer pergunta
+    resposta_wiki = pesquisar_wikipedia(pergunta)
+    if resposta_wiki:
+        return jsonify({'resposta': resposta_wiki})
+
+    # Resposta padrão caso nada seja encontrado
+    return jsonify({'resposta': 'Ainda estou aprendendo sobre isso! Mas pode tentar reformular sua pergunta para eu entender melhor. 😉'})
 
 # -------------------------
 # LOGOUT
@@ -250,12 +281,28 @@ def logout():
     return redirect(url_for('home'))
 
 # -------------------------
-# INICIAR A APLICAÇÃO
+# TERMOS DE USO
 # -------------------------
 @app.route('/termos')
 def termos():
     return render_template('termos.html')
+# -------------------------
+# TERMOS DE TERROR
+# -------------------------
+@app.route('/agenda')
+def agenda():
+    # lógica da agenda aqui, pode renderizar um template
+    return render_template('agenda.html')
+
+@app.route('/blog')
+def Blog():
+    # lógica da agenda aqui, pode renderizar um template
+    return render_template('NevEdu-Blog.html')
+
+
+# -------------------------
+# INICIA A APLICAÇÃO
+# -------------------------
 if __name__ == '__main__':
     criar_banco()
     app.run(debug=True)
-
