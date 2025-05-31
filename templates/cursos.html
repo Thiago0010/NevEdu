@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cursos | NevEdu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cursos.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Nossos Cursos</h1>
+      <input type="text" id="searchBar" placeholder="Buscar cursos...">
+    </header>
+
+    <div class="filtros">
+      <button class="filtro" data-categoria="todos">Todos</button>
+      <button class="filtro" data-categoria="programacao">Programação</button>
+      <button class="filtro" data-categoria="ciencias">Ciências</button>
+      <button class="filtro" data-categoria="idiomas">Idiomas</button>
+    </div>
+
+    <div class="cursos-container" id="cursosContainer">
+      <div class="curso-card" data-categoria="programacao">
+        <h3>Lógica de Programação</h3>
+        <p>Aprenda os fundamentos da lógica com exercícios práticos.</p>
+      </div>
+      <div class="curso-card" data-categoria="idiomas">
+        <h3>Inglês para Iniciantes</h3>
+        <p>Comece a se comunicar em inglês de forma simples e eficiente.</p>
+      </div>
+      <div class="curso-card" data-categoria="ciencias">
+        <h3>Ciências Naturais</h3>
+        <p>Explore os conceitos básicos da biologia, física e química.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+  const filtros = document.querySelectorAll('.filtro');
+  const cards = document.querySelectorAll('.curso-card');
+  const searchBar = document.getElementById('searchBar');
+
+  filtros.forEach(botao => {
+    botao.addEventListener('click', () => {
+      const categoria = botao.dataset.categoria;
+      cards.forEach(card => {
+        const tags = card.dataset.categoria;
+        if (categoria === 'todos' || tags.includes(categoria)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.cookie = `ultimo_filtro=${categoria}; path=/; max-age=86400`;
+    });
+  });
+
+  // Filtro por texto
+  searchBar.addEventListener('keyup', () => {
+    const termo = searchBar.value.toLowerCase();
+    cards.forEach(card => {
+      const titulo = card.querySelector('h3').innerText.toLowerCase();
+      card.style.display = titulo.includes(termo) ? 'block' : 'none';
+    });
+  });
+
+  // Recuperar filtro salvo no cookie
+  const cookies = document.cookie.split(';').map(c => c.trim());
+  const filtroSalvo = cookies.find(c => c.startsWith('ultimo_filtro='));
+  if (filtroSalvo) {
+    const valor = filtroSalvo.split('=')[1];
+    document.querySelector(`[data-categoria="${valor}"]`)?.click();
+  }
+});
+  </script>
+</body>
+</html>

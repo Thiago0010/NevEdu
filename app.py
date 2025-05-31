@@ -46,6 +46,36 @@ def criar_banco():
             FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
         )
     """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cursos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            titulo TEXT NOT NULL,
+            descricao TEXT NOT NULL,
+            imagem TEXT,
+            autor TEXT
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS modulos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            curso_id INTEGER,
+            titulo TEXT NOT NULL,
+            ordem INTEGER,
+            FOREIGN KEY (curso_id) REFERENCES cursos(id)
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS licoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            modulo_id INTEGER,
+            titulo TEXT NOT NULL,
+            conteudo TEXT NOT NULL,
+            ordem INTEGER,
+            FOREIGN KEY (modulo_id) REFERENCES modulos(id)
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -303,10 +333,48 @@ def Blog():
 def professor():
  return render_template('professor.html')
 
+@app.route('/cursos')
+def cursos():
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, titulo, descricao, imagem FROM cursos")
+    cursos = cursor.fetchall()
+    conn.close()
+    return render_template('cursos.html', cursos=cursos)
+
+@app.route('/curso/<int:curso_id>')
+def curso_detalhe(curso_id):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    # Curso principal
+    cursor.execute("SELECT titulo, descricao, imagem, autor FROM cursos WHERE id = ?", (curso_id,))
+    curso = cursor.fetchone()
+
+    if not curso:
+        return "Curso não encontrado", 404
+
+    # Módulos
+    cursor.execute("SELECT id, titulo FROM modulos WHERE curso_id = ? ORDER BY ordem", (curso_id,))
+    modulos = cursor.fetchall()
+
+    # Lição por módulo
+    estrutura = []
+    for modulo in modulos:
+        cursor.execute("SELECT titulo, conteudo FROM licoes WHERE modulo_id = ? ORDER BY ordem", (modulo[0],))
+        licoes = cursor.fetchall()
+        estrutura.append({
+            'modulo': modulo[1],
+            'licoes': licoes
+        })
+
+    conn.close()
+
+    return render_template('curso_detalhe.html', curso=curso, estrutura=estrutura)
+
 # -------------------------
 # INICIA A APLICAÇÃO
 # -------------------------
 if __name__ == '__main__':
-    criar_banco()
+    criar_banco()  # <- ESSENCIAL para evitar o erro de tabela
     app.run(debug=True)
-
