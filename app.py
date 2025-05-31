@@ -299,6 +299,9 @@ def Blog():
     # lógica da agenda aqui, pode renderizar um template
     return render_template('NevEdu-Blog.html')
 
+@app.route('/Professores')
+def professor():
+ return render_template('professor.html')
 
 # -------------------------
 # INICIA A APLICAÇÃO
@@ -306,3 +309,4 @@ def Blog():
 if __name__ == '__main__':
     criar_banco()
     app.run(debug=True)
+

@@ -7,7 +7,9 @@
 </head>
 <body>
   <main class="cadastro-container">
-    <h1>Crie sua conta NevEdu</h1>
+    <h1>Crie sua conta NevEdu
+      <br> <span>aluno</span>
+    </h1>
     <form action="{{ url_for('cadastro') }}" method="POST">
       <label for="nome">Nome:</label>
       <input type="text" id="nome" name="nome" required>
@@ -36,6 +38,36 @@
       <label for="inicio_escolar">Início do Ano Letivo:</label>
       <input type="date" id="inicio_escolar" name="inicio_escolar" required>
 
+      <button type="submit">Cadastrar</button>
+    </form>
+  </main>
+  <main class="cadastro-container">
+    <h1>Crie sua conta NevEdu <br> <span>professor</span></h1>
+    <form action="{{ url_for('cadastro') }}" method="POST">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" name="nome" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" name="senha" required>
+
+      <label for="confirmar">Confirmar Senha:</label>
+      <input type="password" id="confirmar" name="confirmar" required>
+      <label for="disciplina">Disciplina:</label>
+      <select name="disciplina" id="disciplina" required>
+        <option value="">Selecione</option>
+        <option value="Matemática">Matemática</option>
+        <option value="Português">Português</option>
+        <option value="Ciências">Ciências</option>
+        <option value="História">História</option>
+        <option value="Geografia">Geografia</option>
+        <option value="Inglês">Inglês</option>
+        <option value="outros">Outros</option>
+      </select>
+      <label for="Autorização-escolar">Autorização Escolar</label>
+      <input type="file" id="autorizacao_escolar" name="autorizacao_escolar" accept=".pdf,.jpg,.jpeg,.png" required>
       <button type="submit">Cadastrar</button>
     </form>
   </main>

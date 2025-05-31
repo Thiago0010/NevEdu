@@ -54,3 +54,6 @@ button {
 button:hover {
   background-color: #2563eb;
 }
+span{
+  color: rgb(61, 76, 160);
+}

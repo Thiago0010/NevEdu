@@ -33,7 +33,7 @@
     <ul>
         <li><a href="{{ url_for('Blog') }}">Blog</a></li>
         <li><a href="cursos.html">Cursos</a></li>
-        <li><a href="comunidade.html">Comunidade</a></li>
+        <li><a href="{{ url_for('Blog') }}">Comunidade</a></li>
         <li><a href="ajuda.html">Ajuda</a></li>
     </ul>
  </div>
@@ -96,7 +96,7 @@
       </div>
 
       <div class="meus-cursos">
-        <a href="agenda.html">
+        <a href="{{ url_for('agenda') }}">
         <h1>Agenda</h1>
         <p>Veja aqui os próximos eventos, aulas agendadas e prazos importantes.
           Fique por dentro da sua rotina de estudos e não perca nenhuma atividade.</p>
