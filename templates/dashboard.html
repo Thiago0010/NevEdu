@@ -42,7 +42,7 @@
    <h1 class="nome-ini" id="nome-iniid">Olá, {{nome}}! como vai o seu dia?</h1>
    <div class="progresso-container">
    <div class="progresso">
-    <a href="cursos.html">
+    <a href="{{ url_for('cursos') }}">
     <div class="circle-container">
       <svg width="150" height="150">
         <defs>
@@ -58,13 +58,13 @@
     </div>
   
     <div class="info-texto">
-      <h2>Seu Curso</h2>
+      <h2>Lógica De Programação</h2>
       <p>Você está indo bem! Continue assim!</p>
       </a>
     </div>
   </div>
   <div class="progresso">
-    <a href="score.html">
+    <a href="{{ url_for('cursos') }}">
     <div class="circle-container">
       <svg width="150" height="150">
         <defs>
@@ -80,8 +80,8 @@
     </div>
   
     <div class="info-texto">
-      <h2>Seu Curso</h2>
-      <p>Você está indo bem! Continue assim!</p>
+      <h2>Inglês para Iniciantes</h2>
+      <p>Você Consegue Melhorar!</p>
       </a>
     </div>
   </div>

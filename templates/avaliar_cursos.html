@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliador | NevEdu</title>
+</head>
+<body>
+{% for curso in cursos %}
+  <h2>{{ curso.titulo }}</h2>
+  <p>{{ curso.descricao }}</p>
+
+  {% for modulo in curso.modulos %}
+    <h4>{{ modulo.nome }}</h4>
+    <p>{{ modulo.conteudo }}</p>
+  {% endfor %}
+
+  <form action="{{ url_for('aceitar_curso', id=curso.id) }}" method="post">
+    <button type="submit">Aceitar</button>
+  </form>
+  <form action="{{ url_for('rejeitar_curso', id=curso.id) }}" method="post">
+    <button type="submit">Rejeitar</button>
+  </form>
+  <form action="{{ url_for('deletar_curso', id=curso.id) }}" method="post">
+    <button type="submit">Deletar</button>
+  </form>
+  <hr>
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ curso[0] }}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 2rem;
+      background-color: #f8f9fa;
+    }
+    .curso-header {
+      margin-bottom: 2rem;
+    }
+    .modulo {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Título do curso -->
+    <div class="curso-header text-center">
+      <h1>{{ curso[0] }}</h1>
+      <p class="lead">{{ curso[1] }}</p>
+      {% if curso[2] %}
+        <img src="{{ curso[2] }}" class="img-fluid rounded shadow-sm mt-3" alt="Imagem do Curso">
+      {% endif %}
+    </div>
+
+    <!-- Estrutura do curso -->
+    {% for item in estrutura %}
+      <div class="modulo">
+        <h3>{{ item.modulo }}</h3>
+        <ul class="list-group">
+          {% for licao in item.licoes %}
+            <li class="list-group-item">
+              <strong>{{ licao[0] }}</strong><br>
+              <span>{{ licao[1] }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+
+  </div>
+
+</body>
+</html>
