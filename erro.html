@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Erro 404 - Página não encontrada</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    overflow: hidden;
+  }
+
+  .container {
+    text-align: center;
+    padding: 30px;
+    max-width: 480px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    animation: fadeInScale 0.8s ease forwards;
+  }
+
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 10px;
+    user-select: none;
+  }
+
+  .error-message {
+    font-size: 1.5rem;
+    margin: 20px 0 30px;
+    letter-spacing: 1.5px;
+  }
+
+  .btn-home {
+    text-decoration: none;
+    font-weight: 700;
+    background: #fff;
+    color: #764ba2;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    box-shadow: 0 8px 15px rgba(118,75,162,0.3);
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .btn-home:hover, .btn-home:focus {
+    background: #764ba2;
+    color: white;
+    box-shadow: 0 15px 20px rgba(118,75,162,0.5);
+    transform: translateY(-3px);
+  }
+
+  .error-graphic {
+    margin: 40px 0 20px;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Simple animated broken or crossed icon */
+  .error-graphic svg {
+    width: 150px;
+    height: 150px;
+  }
+
+  .cross-line {
+    stroke: white;
+    stroke-width: 8;
+    stroke-linecap: round;
+    animation: crossFade 2s infinite alternate;
+  }
+
+  @keyframes crossFade {
+    0% {
+      stroke-opacity: 0.3;
+    }
+    50% {
+      stroke-opacity: 1;
+    }
+    100% {
+      stroke-opacity: 0.3;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .error-code {
+      font-size: 5rem;
+      letter-spacing: 5px;
+    }
+
+    .container {
+      max-width: 320px;
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="error-title">
+    <div class="error-graphic" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="32" cy="32" r="30" opacity="0.3"/>
+        <line class="cross-line" x1="20" y1="20" x2="44" y2="44"/>
+        <line class="cross-line" x1="44" y1="20" x2="20" y2="44"/>
+      </svg>
+    </div>
+    <h1 class="error-code" id="error-title">404</h1>
+    <p class="error-message">Ops! A página que você está procurando não foi encontrada.</p>
+    <a href="/" class="btn-home" role="button">Voltar para a Página Inicial</a>
+  </div>
+</body>
+</html>
+

@@ -9,6 +9,17 @@ body.dark-mode {
 .menu-neversing li{
 list-style: none;
 }
+.menu-neversing h2{
+    font-family: 'Poppins', sans-serif;
+    margin-left: 60px;
+    color: #F2F4F8;
+  }
+.menu-neversing span {
+  color: #3B82F6;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(59,130,246,0.15);
+}
 .menu-neversing li a{
     text-decoration: none;
     color: rgb(180, 185, 192);

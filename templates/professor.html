@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina do Professor | NevEdu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/professor.css">
+</head>
+<body>
+     <div class="menu-neversing">
+    <!--FUTURAMENTE COLOCAR A LOGO DA NEVERSING AQ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <h2>Nev<span>Edu</span></h2>
+    <ul>
+        <li><a href="{{ url_for('agenda') }}">Agenda</a></li>
+        <li><a href="{{ url_for('Alunos') }}">Alunos</a></li>
+        <li><a href="{{ url_for('Aulas') }}">Aulas</a></li>
+        <li><a href="{{ url_for('Tutoriais')}}">Tutoriais</a></li>
+    </ul>
+ </div>
+ <h1 class="nome-ini" id="nome-iniid">Olá, {{nome}}! como vai o seu dia?</h1>
+
+       <div class="meus-cursos">
+        <a href="{{ url_for('Atividades') }}">
+        <h1>Atividades</h1>
+        <p>Crie, edite e gerencie atividades para seus cursos com facilidade. Aqui você pode montar exercícios, desafios e avaliações que ajudam seus alunos a fixar o conteúdo e testar seus conhecimentos. Defina critérios, acompanhe o desempenho e proporcione uma experiência de aprendizado completa e personalizada.</p>
+        </a>
+      </div>
+             <div class="meus-cursos">
+        <a href="{{ url_for('Alunos') }}">
+        <h1>Alunos</h1>
+        <p>Acompanhe todos os alunos que estão matriculados em seus cursos. Veja o desempenho individual, identifique dificuldades e personalize o acompanhamento de acordo com as necessidades de cada estudante. Esta área oferece uma visão geral das turmas, progresso por módulo e interação com os alunos em tempo real para um ensino mais eficaz.</p>
+        </a>
+      </div>
+
+          <section class="recomendacoes">
+       <div class="card-carrossel">
+  <div class="card">
+    <a href="{{ url_for('GerarCursos') }}">
+    <h3>Gerar <br> <span>cursos</span></h3>
+    <span>Crie cursos automaticamente com o apoio da IA a partir de uma ideia. Basta descrever o tema, e o sistema cuida do resto!</span>
+    </a>
+  </div>
+  <div class="card">
+    <a href="{{ url_for('CursosCriados') }}">
+    <h3>Cursos <br> <span>Criados</span></h3>
+    <span>Acompanhe, edite e gerencie todos os cursos que você já desenvolveu. Mantenha seu conteúdo sempre atualizado e relevante!</span>
+   </a>
+  </div>
+  <div class="card">
+    <a href="{{ url_for('Feedback') }}">
+    <h3>Ia <br> <span>Feedback</span></h3>
+    <span>Veja o que os alunos estão achando dos seus cursos. Use os comentários e avaliações para melhorar ainda mais sua didática e impacto.</span>
+    </a>
+  </div>
+  <!-- Adicione mais cards aqui -->
+   <div class="card">
+    <a href="{{ url_for('Visitas') }}">
+    <h3>Visitas</h3>
+    <span>Acompanhe quantos alunos acessaram seus cursos. Analise o alcance e descubra quais conteúdos despertam mais interesse.</span>
+   </a>
+   </div>
+</div>
+</section>
+
+  </div>
+               <div class="meus-cursos">
+        <a href="{{ url_for('Cont-semanal') }}">
+        <h1>Conteudo Semanal</h1>
+        <p>Receba sugestões de conteúdo semanalmente, com base no desempenho dos alunos e nas tendências atuais. Mantenha seus cursos sempre atualizados e alinhados com o que há de mais relevante no mercado.</p>
+        </a>
+      </div>
+       <div class="meus-cursos">
+        <a href="{{ url_for('Avisos') }}">
+        <h1>Avisos</h1>
+        <p>Fique por dentro de todas as novidades e atualizações importantes. Receba notificações sobre novos recursos, mudanças no sistema e dicas para otimizar sua experiência como professor.</p>
+        </a>
+      </div>
+      <section class="sua-metrica-section">
+        <h1>Sua <br> <Span><strong>Métrica</strong></Span></h1>
+<main>
+    <!-- Dashboard Análise -->
+    <section class="dashboard-card" aria-label="Análise de desempenho dos alunos">
+        <h2>📊 Desempenho do Professor</h2>
+        <canvas id="performanceChart" aria-describedby="alerts"></canvas>
+        <div id="alerts" aria-live="polite" role="alert" aria-atomic="true"></div>
+    </section>
+</main>
+      <footer class="footer">
+        <div class="footer-content">
+        <p>Desenvolvido, pensado e planejado com ☕ e ❤️ por [NEV]Thi_ii</p>  <p>&copy; 2025 NevEdu. Todos os direitos reservados.</p>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('termos') }}">Termos</a></li>
+            <li><a href="#">Privacidade</a></li>
+            <li><a href="https://wa.me/5561998889542">Contato</a></li>
+          </ul>
+        </div>
+      </footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const alunos = [
+    { nome: 'Alice', nota: 85, frequencia: 92 },
+    { nome: 'Bruno', nota: 55, frequencia: 80 },
+    { nome: 'Carla', nota: 72, frequencia: 95 },
+    { nome: 'Daniel', nota: 60, frequencia: 70 },
+    { nome: 'Eva', nota: 90, frequencia: 98 },
+    { nome: 'Felipe', nota: 45, frequencia: 65 },
+];
+
+// Setup gráfico desempenho
+const ctxPerf = document.getElementById('performanceChart').getContext('2d');
+const performanceChart = new Chart(ctxPerf, {
+    type: 'bar',
+    data: {
+        labels: alunos.map(a => a.nome),
+        datasets: [
+            {
+                label: 'Nota (%)',
+                data: alunos.map(a => a.nota),
+                backgroundColor: 'rgba(0, 249, 255, 0.85)',
+                borderRadius: 6,
+            },
+            {
+                label: 'Frequência (%)',
+                data: alunos.map(a => a.frequencia),
+                backgroundColor: 'rgba(255, 193, 7, 0.85)',
+                borderRadius: 6,
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                    color: '#c0c0ff',
+                    stepSize: 10
+                },
+                grid: {
+                    color: '#0a0a20'
+                }
+            },
+            x: {
+                ticks: {
+                    color: '#80d8ff',
+                    font: {
+                        weight: 'bold'
+                    }
+                },
+                grid: {
+                    display: false
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#80d8ff',
+                    font: {
+                        weight: '600',
+                        size: 14
+                    }
+                }
+            },
+            tooltip: {
+                backgroundColor: '#00f9ffcc',
+                titleColor: '#12122b',
+                bodyColor: '#12122b',
+                cornerRadius: 8,
+                displayColors: false
+            }
+        }
+    }
+});
+
+// Alerts de reforço
+const alertsDiv = document.getElementById('alerts');
+function atualizarAlertas() {
+    alertsDiv.innerHTML = '';
+    alunos.forEach(a => {
+        if (a.nota < 60 || a.frequencia < 75) {
+            const div = document.createElement('div');
+            div.classList.add('alert-message');
+            div.textContent = `${a.nome} precisa de reforço (Nota: ${a.nota}%, Frequência: ${a.frequencia}%)`;
+            alertsDiv.appendChild(div);
+        }
+    });
+    if (alertsDiv.children.length === 0) {
+        alertsDiv.innerHTML = '<p style="text-align:center; color:#40ffb0; font-weight:700;">Todos os alunos estão indo bem! 🎉</p>';
+    }
+}
+atualizarAlertas();
+
+</script>
+</body>
+</html>

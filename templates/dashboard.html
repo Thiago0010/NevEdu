@@ -3,13 +3,14 @@
 <head>
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <meta charset="UTF-8">
-    <title>NevEdu
-    </title>
+    <title>NevEdu</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<!-- Coloca essa meta tag no <head> do seu HTML -->
+<meta name="theme-color" content="#0a0f2c">
 </head>
 <body>
   <!-- Botão hamburguer -->
@@ -30,9 +31,10 @@
 
  <div class="menu-neversing">
     <!--FUTURAMENTE COLOCAR A LOGO DA NEVERSING AQ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <h2>Nev<span>Edu</span></h2>
     <ul>
         <li><a href="{{ url_for('Blog') }}">Blog</a></li>
-        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="{{ url_for('cursos') }}">Cursos</a></li>
         <li><a href="{{ url_for('Blog') }}">Comunidade</a></li>
         <li><a href="ajuda.html">Ajuda</a></li>
     </ul>
@@ -106,7 +108,7 @@
         <section class="recomendacoes">
 
     <!-- outros cards -->
-     <div class="card-carrossel">
+    <div class="card-carrossel">
   <div class="card">
     <h3>Lógica de Programação</h3>
     <span>Nível: Iniciante</span>
