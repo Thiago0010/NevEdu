@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ nome }} | NevEdu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/aluno.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    .aluno-box {
+      background-color: #1f1f1f;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .aluno-box img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      border: 4px solid #3B82F6;
+    }
+    .aluno-box h2 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .aluno-box span {
+      color: #3B82F6;
+      font-weight: 500;
+      font-size: 16px;
+    }
+    .acoes {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .acoes a {
+      padding: 12px 24px;
+      background: #3B82F6;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .acoes a:hover {
+      background: #2563EB;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="menu-neversing">
+    <h2>Nev<span>Edu</span></h2>
+    <ul>
+      <li><a href="{{ url_for('alunos') }}">Voltar</a></li>
+    </ul>
+  </div>
+
+  <div class="aluno-box">
+    <img src="{{ foto or '/static/img/user-default.png' }}" alt="Foto do aluno">
+    <h2>{{ nome }}</h2>
+    <span>{{ email }}</span>
+
+    <div class="acoes">
+      <a href="#">Ver Desempenho</a>
+      <a href="#">Enviar Feedback</a>
+      <a href="#">Editar Perfil</a>
+    </div>
+  </div>
+
+</body>
+</html>

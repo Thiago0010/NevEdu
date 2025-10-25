@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #0d1117;
+  color: #c9d1d9;
+}
+
+.nevedu-container {
+  max-width: 850px;
+  margin: 60px auto;
+  padding: 30px 40px;
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: #58a6ff;
+}
+
+.header h1 span {
+  color: #f0f6fc;
+  font-weight: bold;
+}
+
+.header p {
+  font-size: 1rem;
+  color: #8b949e;
+  margin-bottom: 30px;
+}
+
+.curso-card {
+  border: 1px solid #30363d;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  background: #0d1117;
+}
+
+.curso-card h2 {
+  color: #f0f6fc;
+  margin-bottom: 10px;
+}
+
+.curso-card p {
+  color: #b1bac4;
+  margin-bottom: 15px;
+}
+
+.modulos h3 {
+  color: #8b949e;
+  margin-bottom: 8px;
+}
+
+.modulos ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modulos li {
+  margin-bottom: 12px;
+  padding-left: 10px;
+  border-left: 3px solid #58a6ff;
+}
+
+.modulos li p {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: #c9d1d9;
+}
+
+.acoes {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-aceitar {
+  background-color: #238636;
+  color: white;
+}
+.btn-aceitar:hover {
+  background-color: #2ea043;
+}
+
+.btn-rejeitar {
+  background-color: #d29922;
+  color: white;
+}
+.btn-rejeitar:hover {
+  background-color: #e3b341;
+}
+
+.btn-deletar {
+  background-color: #da3633;
+  color: white;
+}
+.btn-deletar:hover {
+  background-color: #f85149;
+}
+
+.sem-curso {
+  text-align: center;
+  color: #8b949e;
+  padding: 40px 0;
+  font-size: 1.1rem;
+}

@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerar Curso | NevEdu</title>
+  <meta charset="UTF-8" />
+  <title>NevEdu | Gerar Curso</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/gerar_curso.css') }}">
 </head>
 <body>
-  <form action="{{ url_for('gerar_curso') }}" method="POST">
-  <input type="text" name="ideia" placeholder="Digite a ideia do curso..." required>
-  <button type="submit">Gerar Curso</button>
-</form>
 
-{% if mensagem %}
-  <p>{{ mensagem }}</p>
-{% endif %}
+  <section class="nevedu-container">
+    <div class="header">
+      <h1><span>NevEdu</span> • Gerador de Cursos</h1>
+      <p>Crie um curso incrível com a ajuda da IA, em segundos.</p>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="success">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" class="gerador-form">
+      <label for="ideia">Tema ou Assunto do Curso</label>
+      <input type="text" id="ideia" name="ideia" placeholder="Ex: História da Arte Moderna" required>
+
+      <small>Descreva com uma palavra ou frase curta o assunto que deseja transformar em curso.</small>
+
+      <button type="submit">Gerar Agora</button>
+    </form>
+  </section>
 
 </body>
 </html>

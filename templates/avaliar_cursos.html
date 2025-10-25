@@ -1,31 +1,51 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliador | NevEdu</title>
+  <meta charset="UTF-8">
+  <title>Avaliar Cursos - NevEdu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/avaliar_cursos.css') }}">
 </head>
 <body>
-{% for curso in cursos %}
-  <h2>{{ curso.titulo }}</h2>
-  <p>{{ curso.descricao }}</p>
+  <section class="nevedu-container">
+    <div class="header">
+      <h1><span>NevEdu</span> • Avaliação de Cursos</h1>
+      <p>Analise os cursos gerados automaticamente antes de serem publicados.</p>
+    </div>
 
-  {% for modulo in curso.modulos %}
-    <h4>{{ modulo.nome }}</h4>
-    <p>{{ modulo.conteudo }}</p>
-  {% endfor %}
+    {% if cursos %}
+      {% for curso in cursos %}
+        <div class="curso-card">
+          <h2>{{ curso.titulo }}</h2>
+          <p>{{ curso.descricao }}</p>
 
-  <form action="{{ url_for('aceitar_curso', id=curso.id) }}" method="post">
-    <button type="submit">Aceitar</button>
-  </form>
-  <form action="{{ url_for('rejeitar_curso', id=curso.id) }}" method="post">
-    <button type="submit">Rejeitar</button>
-  </form>
-  <form action="{{ url_for('deletar_curso', id=curso.id) }}" method="post">
-    <button type="submit">Deletar</button>
-  </form>
-  <hr>
-{% endfor %}
+          <div class="modulos">
+            <h3>Módulos:</h3>
+            <ul>
+              {% for modulo in curso.modulos | safe | loads %}
+                <li>
+                  <strong>{{ modulo.nome }}</strong>
+                  <p>{{ modulo.conteudo }}</p>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
 
+          <div class="acoes">
+            <form action="{{ url_for('aceitar_curso', id=curso.id) }}" method="post">
+              <button class="btn-aceitar">Aceitar</button>
+            </form>
+            <form action="{{ url_for('rejeitar_curso', id=curso.id) }}" method="post">
+              <button class="btn-rejeitar">Rejeitar</button>
+            </form>
+            <form action="{{ url_for('deletar_curso', id=curso.id) }}" method="post">
+              <button class="btn-deletar">Deletar</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="sem-curso">Nenhum curso pendente para avaliação.</div>
+    {% endif %}
+  </section>
 </body>
 </html>

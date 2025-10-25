@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alunos | NevEdu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/aluno.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="menu-neversing">
+    <h2>Nev<span>Edu</span></h2>
+    <ul>
+      <li><a href="{{ url_for('professor') }}">Voltar</a></li>
+    </ul>
+  </div>
+
+  <h2 class="h2-util">Seus Alunos</h2>
+
+  <section class="alunos">
+    {% for aluno in alunos %}
+    <div class="{{ aluno.cor }}">
+      <a href="{{ url_for('perfil_aluno', aluno_id=aluno.id) }}">
+        <img src="{{ aluno.foto }}">
+        <h3>{{ aluno.nome }}</h3>
+        <span>{{ aluno.email }}</span>
+      </a>
+    </div>
+    {% endfor %}
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>Desenvolvido, pensado e planejado com ☕ e ❤️ por [NEV]Thi_ii</p>
+      <p>&copy; 2025 NevEdu. Todos os direitos reservados.</p>
+      <ul class="footer-links">
+        <li><a href="{{ url_for('termos') }}">Termos</a></li>
+        <li><a href="#">Privacidade</a></li>
+        <li><a href="https://wa.me/5561998889542">Contato</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</body>
+</html>

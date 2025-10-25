@@ -69,6 +69,10 @@ margin-top: 100px;
   padding: 40px 20px;
   text-align: center;
   font-family: 'Poppins', sans-serif;
+  align-items: center;
+  align-self: center;
+  display: flex;
+  justify-content: center;
 }
 
 .recomendacoes h2 {
@@ -237,3 +241,7 @@ margin-top: 100px;
 .footer-links li a:hover {
   text-decoration: underline;
 }
+.recomendacoes a{
+     text-decoration: none;
+      color: #3B82F6; /* Cor do link */
+    }

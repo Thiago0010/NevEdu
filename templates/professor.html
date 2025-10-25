@@ -15,7 +15,7 @@
     <h2>Nev<span>Edu</span></h2>
     <ul>
         <li><a href="{{ url_for('agenda') }}">Agenda</a></li>
-        <li><a href="{{ url_for('Alunos') }}">Alunos</a></li>
+        <li><a href="{{ url_for('alunos') }}">Alunos</a></li>
         <li><a href="{{ url_for('Aulas') }}">Aulas</a></li>
         <li><a href="{{ url_for('Tutoriais')}}">Tutoriais</a></li>
     </ul>
@@ -29,7 +29,7 @@
         </a>
       </div>
              <div class="meus-cursos">
-        <a href="{{ url_for('Alunos') }}">
+        <a href="{{ url_for('alunos') }}">
         <h1>Alunos</h1>
         <p>Acompanhe todos os alunos que estão matriculados em seus cursos. Veja o desempenho individual, identifique dificuldades e personalize o acompanhamento de acordo com as necessidades de cada estudante. Esta área oferece uma visão geral das turmas, progresso por módulo e interação com os alunos em tempo real para um ensino mais eficaz.</p>
         </a>
@@ -38,7 +38,7 @@
           <section class="recomendacoes">
        <div class="card-carrossel">
   <div class="card">
-    <a href="{{ url_for('GerarCursos') }}">
+    <a href="{{ url_for('Gerarcursos') }}">
     <h3>Gerar <br> <span>cursos</span></h3>
     <span>Crie cursos automaticamente com o apoio da IA a partir de uma ideia. Basta descrever o tema, e o sistema cuida do resto!</span>
     </a>
@@ -67,7 +67,7 @@
 
   </div>
                <div class="meus-cursos">
-        <a href="{{ url_for('Cont-semanal') }}">
+        <a href="{{ url_for('Contsemanal') }}">
         <h1>Conteudo Semanal</h1>
         <p>Receba sugestões de conteúdo semanalmente, com base no desempenho dos alunos e nas tendências atuais. Mantenha seus cursos sempre atualizados e alinhados com o que há de mais relevante no mercado.</p>
         </a>
